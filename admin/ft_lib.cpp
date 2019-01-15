@@ -41,12 +41,13 @@ char  *ft_realloc(char *str, int siz)
     ft_strncpy(tmp, str, i);
     free(str);
   }
-  str = (char*)malloc(sizeof(char) * i + siz);
+  str = (char*)malloc(sizeof(char) * i + siz + 1);
   if (str != NULL)
   {
     ft_strncpy(str, tmp, i);
     free(tmp);
   }
+  str[i + siz + 1] = '\0';
   return (str);
 }
 
