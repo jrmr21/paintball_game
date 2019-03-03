@@ -16,4 +16,6 @@ void    init_pin(void)
 void    init_lcd(void)
 {
   lcd.init();
+  lcd.begin(16, 2);   // set resolution, angain ?? WHYY !!?
+  lcd.clear();
 }
