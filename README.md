@@ -2,7 +2,7 @@
 
 It's a licence project, Work in progress
 
-We would'like to create small device onnected outside to made short game for paintball party or airsoft.
+We would'like to create small device connected outside, to made short game for paintball party or airsoft.
 
 
 radio source code from here : 
