@@ -16,8 +16,8 @@ void    key_loop(int8_t *bt1, int8_t *bt2, int8_t *bt3);
 #define posX_arrow    14
 #define arrow         "<="
 
-#define   lcd_ADRESS 0x3F
-//#define   lcd_ADRESS 0x27
+//#define   lcd_ADRESS 0x3F
+#define   lcd_ADRESS 0x27
 
 #ifndef LCD                // PROTECT DOUBLE INCLUSION BABY
   #define LCD
