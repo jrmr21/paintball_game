@@ -7,3 +7,8 @@ We would'like to create small device connected outside, to made short game for p
 
 radio source code from here : 
     https://howtomechatronics.com/tutorials/arduino/arduino-wireless-communication-nrf24l01-tutorial/
+    
+    
+    
+    ps:
+        https://fr.wikipedia.org/wiki/Topologie_mesh
