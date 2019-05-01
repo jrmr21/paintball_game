@@ -1,6 +1,6 @@
 #include "core_header.h"
 
-void frame1(int8_t *frame)
+void frame1(int8_t *frame)    // frame (menu) display
 {
   lcd.clear();
   
