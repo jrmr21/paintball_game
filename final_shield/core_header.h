@@ -44,8 +44,8 @@ void  init_lcd(void);
 #define btn2  6
 #define btn3  9
 
-#define MIN_frame  1
-#define MAX_frame  4
+#define MIN_item  1
+#define MAX_item  6
 
 void    init_pin(void);
 void    update_mouse(int8_t select);
@@ -54,12 +54,14 @@ void    update_mouse(int8_t select);
 //************  FRAME   *********************
 void  frame1(int8_t *frame);
 void  frame2(int8_t *frame);
+void  frame3(int8_t *frame);
 
 
 //***********  Item   ************************
 void  opt_demo(void);
 void  radio_sender(void);
 void  radio_recerve(void);
+void  led(void);
 
 
 
@@ -70,7 +72,7 @@ void  radio_recerve(void);
 
 void  radio_init_sender(const byte address[6]);
 void  radio_init_recerve(const byte address[6]);
-void  radio_recerve(char text[32]);
-void  radio_send(const char text[32]);
+void  radio_recerve(char *text);
+void  radio_send(const char *text);
 
 #endif

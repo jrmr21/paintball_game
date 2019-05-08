@@ -8,6 +8,10 @@ void    init_pin(void)
   pinMode(G, OUTPUT);
   pinMode(B, OUTPUT);
 
+  digitalWrite(R, 0);
+  digitalWrite(G, 0);
+  digitalWrite(B, 0);
+
   pinMode(btn1, INPUT);
   pinMode(btn2, INPUT);
   pinMode(btn3, INPUT);

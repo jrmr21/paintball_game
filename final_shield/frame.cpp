@@ -31,3 +31,18 @@ void frame2(int8_t *frame)
 
   *frame = 2;
 } 
+
+void  frame3(int8_t *frame)
+{
+  lcd.clear();
+  
+  char *line1 = "- led";              //  6
+  char *line2 = "- info";            //   5
+  
+  lcd.set_Cursor(0, 0);
+  lcd.printstr(line1);
+  lcd.set_Cursor(0, 1);
+  lcd.printstr(line2);  
+
+  *frame = 3;
+} 

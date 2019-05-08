@@ -21,30 +21,17 @@ void  setup()
  
     if (bt1)
     {     
-        if (pos > MIN_frame)
-        {
-            pos--;
-            
-            if ((pos <= 2) && (frame != 1)) 
-              frame1(&frame);
-        } 
+        if (pos > MIN_item)  pos--;     
         update_mouse(pos);
     }
     else if (bt2)
     {
-      if (pos < MAX_frame)
-      {
-        pos++;  
-        
-        if ((pos >= 3) && (frame != 2))
-          frame2(&frame);
-      }
-      
+      if (pos < MAX_item)  pos++;  
       update_mouse(pos);
     }
     else if (bt3)
     {
-                            //     call option selected
+                            //     call item selected
       switch(pos)
       { 
         case 1 :  radio_recerve();         //  "-recerve data"; 
@@ -60,13 +47,31 @@ void  setup()
         case 4 :  opt_demo();             // "-snd, rcv";  
                   frame2(&frame);
                   break;
-                  
+        case 6 :  led();             // "-snd, rcv";  
+                  frame3(&frame);
+                  break;
         default : break;
       }
-
-      Serial.println(pos);
       update_mouse(pos);
     }
+
+//--------------------------------   add you selection frame here  ---------------------------------------------------------
+    if ((pos <= 2) && (frame != 1))                              // choice 1(MIN_item) and 2 
+    {
+      frame1(&frame);
+      update_mouse(pos);
+    }
+    else if ((pos >= 3) && (pos <= 4) && (frame != 2))             // choice 3 and 4 
+    {
+      frame2(&frame);
+      update_mouse(pos);
+    }
+    else if ((pos >= 5) && (pos <= MAX_item) && (frame != 3))  // choice 5 and 6 
+    {
+      frame3(&frame);
+      update_mouse(pos);
+    }
+
     lcd.backlight();    // set light ON (in loop, shit code..)  
   }
 }

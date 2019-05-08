@@ -8,6 +8,8 @@ OPTION MENU SELECT :      /!\ POTENTIAL FAIL WITH SPAM SELECTION /!\
     "-recerve data";          //  1
     "-snd, rcv";              //  4
     "-game";                  //  3
+    "- led";                  //  6
+    "- info";                 //  5
 
 
 
@@ -23,5 +25,27 @@ OPTION MENU SELECT :      /!\ POTENTIAL FAIL WITH SPAM SELECTION /!\
              for example you are 3 your Y is 1 position
              but you are 4 your Y is 0 position
 
+
+FRAME AND ITEM SCHEMATIC :
+=========================
+
+  frame 1
+    ----------
+    |
+    | item 2
+    | item 1
+    ----------
+   frame 2
+    ----------
+    |
+    | item 4
+    | item 3
+    ----------
+  frame 3
+    ----------
+    |
+    | item 6
+    | item 5
+    ----------
 
  */

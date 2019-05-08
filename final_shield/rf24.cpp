@@ -18,19 +18,23 @@ void  radio_init_recerve(const byte address[6])
   radio.startListening();
 }
 
-void  radio_recerve(char text[32])
+void  radio_recerve(char *text)
 {
+      char texto[32] = "";
+      
       if (radio.available()) 
       {
           text[0] = '\0';         // fake clear tab
           
-          radio.read(&text, sizeof(text));
-          Serial.println(text);
+          radio.read(&texto, sizeof(texto));
+          Serial.println(texto);
+
+          strcpy(text, texto);
       }  
 }
 
-void  radio_send(const char text[32])
+void  radio_send(const char *text)
 {
-  radio.write(&text, sizeof(text));
-  delay(100);
+  radio.write(text, strlen(text));    // strlen is better of sizeof to calculate size char
+  delay(50);
 }
