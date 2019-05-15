@@ -34,10 +34,10 @@ void  setup()
                             //     call item selected
       switch(pos)
       { 
-        case 1 :  radio_recerve();         //  "-recerve data"; 
+        case 1 :  demo_receirve();         //  "-receirve data"; 
                   frame1(&frame);         //  replay the last frame
                   break;
-        case 2 :  radio_sender();         //  "-send data";  
+        case 2 :  demo_sender();         //  "-send data";  
                   frame1(&frame);
                   break;      
                     
@@ -47,7 +47,7 @@ void  setup()
         case 4 :  opt_demo();             // "-snd, rcv";  
                   frame2(&frame);
                   break;
-        case 6 :  led();             // "-snd, rcv";  
+        case 6 :  led();             
                   frame3(&frame);
                   break;
         default : break;
@@ -62,6 +62,11 @@ void  setup()
       update_mouse(pos);
     }
     else if ((pos >= 3) && (pos <= 4) && (frame != 2))             // choice 3 and 4 
+    {
+      frame2(&frame);
+      update_mouse(pos);
+    }
+    else if ((pos >= 7) && (pos <= 8) && (frame != 4))             // choice 3 and 4 
     {
       frame2(&frame);
       update_mouse(pos);

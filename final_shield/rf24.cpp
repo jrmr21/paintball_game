@@ -10,7 +10,7 @@ void  radio_init_sender(const byte address[6])
   radio.stopListening();
 }
 
-void  radio_init_recerve(const byte address[6])
+void  radio_init_receirve(const byte address[6])
 {
   radio.begin();
   radio.openReadingPipe(0, address);
@@ -18,7 +18,7 @@ void  radio_init_recerve(const byte address[6])
   radio.startListening();
 }
 
-void  radio_recerve(char *text)
+void  radio_receirve(char *text)
 {
       char texto[32] = "";
       

@@ -5,7 +5,7 @@ OPTION MENU SELECT :      /!\ POTENTIAL FAIL WITH SPAM SELECTION /!\
 
 
     "-send data";             //  2
-    "-recerve data";          //  1
+    "-receirve data";          //  1
     "-snd, rcv";              //  4
     "-game";                  //  3
     "- led";                  //  6
@@ -47,5 +47,35 @@ FRAME AND ITEM SCHEMATIC :
     | item 6
     | item 5
     ----------
+
+
+DEFAULT ITEM :
+==============
+
+void  game(void)
+{
+      int8_t i;
+      int8_t bt1, bt2, bt3;
+      uint32_t  mili; 
+      
+      i     = 1;
+      mili  = millis();
+      lcd.clear();
+      lcd.print(" it's a demo ");
+      
+      while (i)
+      {
+          key_loop(&bt1, &bt2, &bt3);
+
+          //  if ((millis() - mili) > 1500)    // evry 1s
+          //  {
+          //    mili  = millis();               // example to use millis function
+          //  }
+
+          if (bt3)  i = 0;
+          lcd.backlight();    // set light ON (in loop, shit code..)  
+      }
+      lcd.clear();
+}
 
  */

@@ -64,7 +64,7 @@ void  led(void)
       lcd.clear();
 }
 
-void  radio_sender(void)
+void  demo_sender(void)
 {
       int8_t    flag;
       int8_t    i;
@@ -112,7 +112,45 @@ void  radio_sender(void)
       lcd.clear();
 }
 
-void  radio_recerve(void)
+void  game_master(void)
+{
+      int8_t  i;
+      int8_t  j;
+      int8_t  bt1, bt2, bt3;
+      char    tempo[32];
+      char    text[32];
+      char    players[5][3];
+      
+      j         = 0;
+      i         = 1;
+      tempo[0]  = '\0';
+      text[0]   = '\0';
+      
+      lcd.clear();
+      lcd.set_Cursor(0,0);
+      lcd.print(" *** MASTER ***");
+
+      radio_init_receirve("00001");
+      while (i)
+      {
+          key_loop(&bt1, &bt2, &bt3);
+
+          radio_receirve(tempo);                 // listen
+/*
+          for (int8_t k = 0; 
+          if (strcmp(tempo, text) != 0)   // we have a difference
+          {
+              strcpy(text, tempo);
+          }
+*/
+          
+          if (bt3)  i = 0;
+          lcd.backlight();    // set light ON (in loop, shit code..)  
+      }
+      lcd.clear();
+}
+
+void  demo_receirve(void)
 {
       int8_t  i;
       int8_t  bt1, bt2, bt3;
@@ -124,14 +162,14 @@ void  radio_recerve(void)
       text[0]   = '\0';
       lcd.clear();
       lcd.set_Cursor(0,0);
-      lcd.print("RECERVE demo ");
+      lcd.print("RECEIRVE demo ");
 
-      radio_init_recerve("00001");
+      radio_init_receirve("00001");
       while (i)
       {
           key_loop(&bt1, &bt2, &bt3);
 
-          radio_recerve(tempo);
+          radio_receirve(tempo);
           
           if (strcmp(tempo, text) != 0)   // we have a difference
           {

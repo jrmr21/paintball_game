@@ -16,8 +16,8 @@ void    key_loop(int8_t *bt1, int8_t *bt2, int8_t *bt3);
 #define posX_arrow    14
 #define arrow         "<="
 
-#define   lcd_ADRESS 0x3F
-//#define   lcd_ADRESS 0x27
+//#define   lcd_ADRESS 0x3F
+#define   lcd_ADRESS 0x27
 
 #ifndef LCD                // PROTECT DOUBLE INCLUSION BABY
   #define LCD
@@ -27,6 +27,7 @@ void    key_loop(int8_t *bt1, int8_t *bt2, int8_t *bt3);
 #endif
 
 void  init_lcd(void);
+
 /*
  *                    We USE  
   lcd.set_Cursor(col, line);
@@ -59,8 +60,8 @@ void  frame3(int8_t *frame);
 
 //***********  Item   ************************
 void  opt_demo(void);
-void  radio_sender(void);
-void  radio_recerve(void);
+void  demo_sender(void);
+void  demo_receirve(void);
 void  led(void);
 
 
@@ -71,8 +72,8 @@ void  led(void);
 //  const byte address[6] = "00001";      EXAMPLE
 
 void  radio_init_sender(const byte address[6]);
-void  radio_init_recerve(const byte address[6]);
-void  radio_recerve(char *text);
+void  radio_init_receirve(const byte address[6]);
+void  radio_receirve(char *text);
 void  radio_send(const char *text);
 
 #endif
