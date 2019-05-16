@@ -76,4 +76,8 @@ void  radio_init_receirve(const byte address[6]);
 void  radio_receirve(char *text);
 void  radio_send(const char *text);
 
+
+// ***********    GAME_ONE   ********************
+void  game_one_master(void);
+
 #endif

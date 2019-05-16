@@ -1,5 +1,7 @@
 #include  "core_header.h"
 
+
+
 void  opt_demo(void)
 {
       int8_t i;
@@ -77,7 +79,7 @@ void  demo_sender(void)
       flag  = 0;
       mili  = millis();
       lcd.clear();
-      lcd.set_Cursor(0,0);
+      lcd.set_Cursor(0,0);                // X, Y
       lcd.print("it's a SENDER demo ");
       
       lcd.set_Cursor(0,1);
@@ -112,39 +114,37 @@ void  demo_sender(void)
       lcd.clear();
 }
 
-void  game_master(void)
+void  game_one(void)
 {
       int8_t  i;
-      int8_t  j;
       int8_t  bt1, bt2, bt3;
-      char    tempo[32];
-      char    text[32];
-      char    players[5][3];
-      
-      j         = 0;
+
       i         = 1;
-      tempo[0]  = '\0';
-      text[0]   = '\0';
       
       lcd.clear();
+      
       lcd.set_Cursor(0,0);
-      lcd.print(" *** MASTER ***");
+      lcd.print(" *** GAME 1 ***");
 
-      radio_init_receirve("00001");
+      lcd.set_Cursor(0,1);
+      lcd.print("1 = M | 2 = G");
+      
       while (i)
       {
           key_loop(&bt1, &bt2, &bt3);
 
-          radio_receirve(tempo);                 // listen
-/*
-          for (int8_t k = 0; 
-          if (strcmp(tempo, text) != 0)   // we have a difference
+
+          if (bt1)
           {
-              strcpy(text, tempo);
+            game_one_master();
+            i = 0;
           }
-*/
-          
-          if (bt3)  i = 0;
+          else if (bt2)
+          {
+
+            i = 0;
+          }
+          else if (bt3)  i = 0;
           lcd.backlight();    // set light ON (in loop, shit code..)  
       }
       lcd.clear();
