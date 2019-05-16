@@ -47,6 +47,10 @@ void  setup()
         case 4 :  opt_demo();             // "-snd, rcv";  
                   frame2(&frame);
                   break;
+				  
+		case 5 :  adress();             
+                  frame3(&frame);
+                  break;
         case 6 :  led();             
                   frame3(&frame);
                   break;

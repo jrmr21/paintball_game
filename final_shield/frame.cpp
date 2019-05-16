@@ -37,7 +37,7 @@ void  frame3(int8_t *frame)
   lcd.clear();
   
   char *line1 = "- led";              //  6
-  char *line2 = "- info";            //   5
+  char *line2 = "- adress";            //   5
   
   lcd.set_Cursor(0, 0);
   lcd.printstr(line1);

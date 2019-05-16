@@ -1,5 +1,7 @@
 #include  "core_header.h"
 
+unsigned char terminal_adress = 0;
+
 void  opt_demo(void)
 {
       int8_t i;
@@ -185,4 +187,57 @@ void  demo_receirve(void)
           lcd.backlight();    // set light ON (in loop, shit code..)  
       }
       lcd.clear();
+}
+
+void  adress(void)
+{
+    int8_t  i;
+    int8_t  bt1, bt2, bt3;
+    char    tempo[32];
+    char    text[32];
+	  unsigned char old_terminal_adress = terminal_adress;
+	
+    i               = 1;
+    text[0]         = '\0';
+    lcd.clear();
+    lcd.set_Cursor(0,0);
+    lcd.print("terminal_adress");
+    lcd.set_Cursor(0,1);
+    lcd.print(terminal_adress);
+
+    while (i)
+    {
+        key_loop(&bt1, &bt2, &bt3);
+		
+		if (old_terminal_adress != terminal_adress)
+		{
+			old_terminal_adress = terminal_adress;
+      
+      lcd.set_Cursor(0,1);
+      lcd.print(clear_line);
+      lcd.set_Cursor(0,1);
+      lcd.print(terminal_adress);
+		}
+		
+		if (bt1)
+		{
+				terminal_adress++;
+        // Si on incremente a 255 on passe tout de suite a 0
+        if (terminal_adress == 255)
+          terminal_adress = 0;
+		}
+		
+		if (bt2)
+		{
+				terminal_adress--;
+        // Si on décremente a 0 on passe tout de suite a 254
+        if (terminal_adress == 255)
+          terminal_adress = 254;
+		}
+
+   
+		if (bt3)  i = 0;
+			lcd.backlight();    // set light ON (in loop, shit code..)  
+    }
+    lcd.clear();
 }
