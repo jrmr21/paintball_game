@@ -1,6 +1,6 @@
 #include  "core_header.h"
 
-
+unsigned char terminal_adress = 0;
 
 void  opt_demo(void)
 {
@@ -72,9 +72,8 @@ void  demo_sender(void)
       int8_t    i;
       int8_t    bt1, bt2, bt3;
       uint32_t  mili;           // same "unsigned long" but we don't like write ARDUINO shit
-      char      text[32];
+      unsigned char      test[2];
 
-      text[0] = '\0';
       i     = 1;
       flag  = 0;
       mili  = millis();
@@ -92,10 +91,11 @@ void  demo_sender(void)
 
           if ((millis() - mili) > 1000)    // evry 1s
           { 
-            strncpy(text, (flag)? "hy_bro\0" : "lol_br\0", 7);
+            test[0] = (flag)? 223 : 130;
+            test[1] = '\0';
             flag = !flag;
 
-            radio_send(text);
+            radio_send(test);
             
             lcd.set_Cursor(5, 1);
             lcd.print("=>>");
@@ -155,7 +155,7 @@ void  demo_receirve(void)
       int8_t  i;
       int8_t  bt1, bt2, bt3;
       char    tempo[32];
-      char    text[32];
+      unsigned char    text[32];
       
       i         = 1;
       tempo[0]  = '\0';
@@ -178,11 +178,65 @@ void  demo_receirve(void)
               lcd.print(clear_line);
 
               lcd.set_Cursor(0, 1);
-              lcd.print(tempo);
+              lcd.print(((int)tempo[0]) + 256);
           }
           
           if (bt3)  i = 0;
           lcd.backlight();    // set light ON (in loop, shit code..)  
       }
       lcd.clear();
+}
+
+void  adress(void)
+{
+    int8_t  i;
+    int8_t  bt1, bt2, bt3;
+    char    tempo[32];
+    char    text[32];
+    unsigned char old_terminal_adress = terminal_adress;
+  
+    i               = 1;
+    text[0]         = '\0';
+    lcd.clear();
+    lcd.set_Cursor(0,0);
+    lcd.print("terminal_adress");
+    lcd.set_Cursor(0,1);
+    lcd.print(terminal_adress);
+
+    while (i)
+    {
+        key_loop(&bt1, &bt2, &bt3);
+    
+        if (old_terminal_adress != terminal_adress)
+        {
+          old_terminal_adress = terminal_adress;
+          
+          lcd.set_Cursor(0,1);
+          lcd.print(clear_line);
+          lcd.set_Cursor(0,1);
+          lcd.print(terminal_adress);
+        }
+        
+        if (bt1)
+        {
+            terminal_adress++;
+            // Si on incremente a 255 on passe tout de suite a 0
+            if (terminal_adress == 255)
+              terminal_adress = 0;
+        }
+        
+        if (bt2)
+        {
+            terminal_adress--;
+            // Si on décremente a 0 on passe tout de suite a 254
+            if (terminal_adress == 255)
+              terminal_adress = 254;
+        }
+
+   
+        if (bt3)  i = 0;
+          lcd.backlight();    // set light ON (in loop, shit code..)  
+      }
+      
+    lcd.clear();
 }

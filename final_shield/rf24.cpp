@@ -18,22 +18,24 @@ void  radio_init_receirve(const byte address[6])
   radio.startListening();
 }
 
-void  radio_receirve(char *text)
+void  radio_receirve(unsigned char *text)
 {
-      char texto[32] = "";
+      unsigned char texto[32] = "";
       
       if (radio.available()) 
       {
           text[0] = '\0';         // fake clear tab
           
           radio.read(&texto, sizeof(texto));
-          Serial.println(texto);
+          Serial.println(texto[0]);
 
           strcpy(text, texto);
+          Serial.print("msg: ");
+          Serial.println((int)text[0]);
       }  
 }
 
-void  radio_send(const char *text)
+void  radio_send(const unsigned char *text)
 {
   radio.write(text, strlen(text));    // strlen is better of sizeof to calculate size char
   delay(50);

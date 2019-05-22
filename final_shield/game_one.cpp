@@ -1,6 +1,6 @@
 #include "core_header.h"
 
-void	game_one_master(void)
+void	  game_one_master(void)
 {
       int8_t  i;
       int8_t  j;
