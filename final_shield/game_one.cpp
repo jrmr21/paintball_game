@@ -28,17 +28,8 @@ void	  game_one_master(void)
       while (i)
       {
           key_loop(&bt1, &bt2, &bt3);
-
-
           radio_receirve(tempo);
 
-          /*
-          for (int8_t k = 0; 
-              if (strcmp(tempo, text) != 0)   // we have a difference
-              {
-                  strcpy(text, tempo);
-              }
-            */
   
           if (bt3) 
           {

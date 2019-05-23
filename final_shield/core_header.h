@@ -95,4 +95,12 @@ void  radio_send(const unsigned char *text);
 // ***********    GAME_ONE   ********************
 void  game_one_master(void);
 
+
+// ***********    TOOLS   ********************
+unsigned char*  compress_char(unsigned int a);
+unsigned int    decompress_char(unsigned char a[2]);
+void            create_trame(trame_t *t, char* buf);
+int             read_trame(trame_s *t, char* buf);
+
+
 #endif

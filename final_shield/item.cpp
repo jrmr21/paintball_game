@@ -238,6 +238,5 @@ void  adress(void)
         if (bt3)  i = 0;
           lcd.backlight();    // set light ON (in loop, shit code..)  
       }
-   
     lcd.clear();
 }
