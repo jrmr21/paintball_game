@@ -1,7 +1,11 @@
 #include "core_header.h"
 
+
+extern unsigned char terminal_adress = 0;
+
 void	  game_one_master(void)
 {
+      trame_t   trame;
       int8_t  i;
       int8_t  j;
       int8_t  bt1, bt2, bt3;
@@ -13,7 +17,8 @@ void	  game_one_master(void)
       i         = 1;
       tempo[0]  = '\0';
       text[0]   = '\0';
-      
+      terminal_adress = 255;
+            
       lcd.clear();
       
       lcd.set_Cursor(0,0);

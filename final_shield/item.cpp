@@ -1,10 +1,10 @@
 #include  "core_header.h"
 
-unsigned char terminal_adress = 0;
+static unsigned char terminal_adress = 0;
 
 void  opt_demo(void)
 {
-      int8_t i;
+      uint8_t i;
       int8_t bt1, bt2, bt3;
       
       i = 1;
@@ -178,7 +178,7 @@ void  demo_receirve(void)
               lcd.print(clear_line);
 
               lcd.set_Cursor(0, 1);
-              lcd.print(((int)tempo[0]) + 256);
+              lcd.print((tempo[0]) + 256);
           }
           
           if (bt3)  i = 0;

@@ -17,8 +17,8 @@ void    key_loop(int8_t *bt1, int8_t *bt2, int8_t *bt3);
 #define posX_arrow    14
 #define arrow         "<="
 
-#define   lcd_ADRESS 0x3F
-//#define   lcd_ADRESS 0x27
+//#define   lcd_ADRESS 0x3F
+#define   lcd_ADRESS 0x27
 
 #ifndef LCD                // PROTECT DOUBLE INCLUSION BABY
   #define LCD
@@ -48,6 +48,18 @@ void  init_lcd(void);
 
 #define MIN_item  1
 #define MAX_item  6
+
+typedef struct    trame_s
+{
+  unsigned char   adress;
+  unsigned char   adress_to;
+
+  unsigned char   size_trame;
+  unsigned char   number_command;
+
+  unsigned char   *data[4]; 
+  
+}                 trame_t;
 
 void    init_pin(void);
 void    update_mouse(int8_t select);
