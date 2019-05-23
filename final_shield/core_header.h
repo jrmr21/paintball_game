@@ -11,14 +11,13 @@ void    key_loop(int8_t *bt1, int8_t *bt2, int8_t *bt3);
 #include <Wire.h> 
 #include "LiquidCrystal_I2C.h"
 
-#define prout "gros prout"
 #define clear_line    "                "
 #define clear_arrow   "  "
 #define posX_arrow    14
 #define arrow         "<="
 
-//#define   lcd_ADRESS 0x3F
-#define   lcd_ADRESS 0x27
+#define   lcd_ADRESS 0x3F
+//#define   lcd_ADRESS 0x27
 
 #ifndef LCD                // PROTECT DOUBLE INCLUSION BABY
   #define LCD
@@ -65,6 +64,7 @@ void  demo_sender(void);
 void  demo_receirve(void);
 void  adress(void);
 void  led(void);
+void  adress(void);
 
 
 
@@ -75,7 +75,11 @@ void  led(void);
 
 void  radio_init_sender(const byte address[6]);
 void  radio_init_receirve(const byte address[6]);
-void  radio_receirve(char *text);
-void  radio_send(const char *text);
+void  radio_receirve(unsigned char *text);
+void  radio_send(const unsigned char *text);
+
+
+// ***********    GAME_ONE   ********************
+void  game_one_master(void);
 
 #endif
