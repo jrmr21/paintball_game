@@ -9,7 +9,7 @@ OPTION MENU SELECT :      /!\ POTENTIAL FAIL WITH SPAM SELECTION /!\
     "-snd, rcv";              //  4
     "-game";                  //  3
     "- led";                  //  6
-    "- info";                 //  5
+    "- adress";               //  5
 
 
 

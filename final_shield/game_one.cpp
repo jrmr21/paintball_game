@@ -42,5 +42,4 @@ void	  game_one_master(void)
           lcd.backlight();    // set light ON (in loop, shit code..)  
       }
       lcd.clear();
-
 }

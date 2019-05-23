@@ -193,8 +193,9 @@ void  adress(void)
     int8_t  bt1, bt2, bt3;
     char    tempo[32];
     char    text[32];
+    
     unsigned char old_terminal_adress = terminal_adress;
-  
+
     i               = 1;
     text[0]         = '\0';
     lcd.clear();
@@ -237,6 +238,6 @@ void  adress(void)
         if (bt3)  i = 0;
           lcd.backlight();    // set light ON (in loop, shit code..)  
       }
-      
+   
     lcd.clear();
 }

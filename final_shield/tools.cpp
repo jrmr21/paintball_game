@@ -2,7 +2,7 @@
 
 char*   compress_char(int a)
 {
-  
+    
   
 }
 

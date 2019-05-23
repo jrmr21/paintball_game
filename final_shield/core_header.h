@@ -11,6 +11,7 @@ void    key_loop(int8_t *bt1, int8_t *bt2, int8_t *bt3);
 #include <Wire.h> 
 #include "LiquidCrystal_I2C.h"
 
+
 #define clear_line    "                "
 #define clear_arrow   "  "
 #define posX_arrow    14
@@ -62,6 +63,7 @@ void  frame3(int8_t *frame);
 void  opt_demo(void);
 void  demo_sender(void);
 void  demo_receirve(void);
+void  adress(void);
 void  led(void);
 void  adress(void);
 
