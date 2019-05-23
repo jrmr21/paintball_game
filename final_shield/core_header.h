@@ -11,6 +11,7 @@ void    key_loop(int8_t *bt1, int8_t *bt2, int8_t *bt3);
 #include <Wire.h> 
 #include "LiquidCrystal_I2C.h"
 
+#define prout "gros prout"
 #define clear_line    "                "
 #define clear_arrow   "  "
 #define posX_arrow    14
