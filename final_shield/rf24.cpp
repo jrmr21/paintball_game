@@ -35,11 +35,12 @@ void  radio_send(trame_t *t)
 {
   unsigned char *text;
   
-  //trame_to_str(t, text);
-  
+  trame_to_str(t, text);
+
+  /*Serial.println(" send: ");
   while(*text)
-    Serial.print(*text++);
-  Serial.println(" ");
+    Serial.print((char)*text++);
+  Serial.println(" end send");*/
                                       // WARNING USE CONST OR NOT
   radio.write(text, strlen(text));    // strlen is better of sizeof to calculate size char
   delay(50);

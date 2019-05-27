@@ -113,11 +113,11 @@ void  game_master(void);
 #define   SCORE            'S' 
 
 
-void            create_trame(trame_t *t, char network[3], ...);
+void            create_trame(trame_t *t, unsigned char network[3], ...);
 unsigned char*  compress_char(unsigned int a);
 unsigned int    decompress_char(unsigned char a[2]);
-void            trame_to_str(trame_t *t, char* buf);
-int             read_trame(trame_s *t, char* buf);
+void            trame_to_str(trame_t *t, unsigned char* str);
+int             read_trame(trame_s *t, unsigned char* buf);
 
 
 #endif

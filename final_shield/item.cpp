@@ -98,14 +98,15 @@ void  demo_sender(void)
           if ((millis() - mili) > 1000)    // evry 1s
           { 
             (flag)? create_trame(&trame, network, GET_TIME, TIME_START, TIME_START, END_COMMAND) : create_trame(&trame, network, TIME_STOP, GET_TIME, END_COMMAND);
-            Serial.println(" ");
+            
+            /*Serial.println(" ");
             for (int b = 0; b < 3; b++)
               Serial.print((char)trame.data[1][b]);
 
             Serial.print(" size trame: ");
             Serial.println(trame.size_trame);
             Serial.print(" command send: ");
-            Serial.println(trame.number_command);
+            Serial.println(trame.number_command);*/
             
             flag = !flag;
             radio_send(&trame);
