@@ -80,7 +80,7 @@ void  demo_sender(void)
       mili  = millis();
           
       network[0]  = terminal_adress;
-      network[1]  = BRODCAST;
+      network[1]  = MASTER_ADRESS;
       network[2]  = '\0';
       
       lcd.clear();
@@ -97,10 +97,15 @@ void  demo_sender(void)
 
           if ((millis() - mili) > 1000)    // evry 1s
           { 
-            (flag)? create_trame(&trame, network, TIME_START) : create_trame(&trame, network, TIME_STOP);
+            (flag)? create_trame(&trame, network, GET_TIME, TIME_START, TIME_START, END_COMMAND) : create_trame(&trame, network, TIME_STOP, GET_TIME, END_COMMAND);
             Serial.println(" ");
             for (int b = 0; b < 3; b++)
-              Serial.print((char)trame.data[0][b]);
+              Serial.print((char)trame.data[1][b]);
+
+            Serial.print(" size trame: ");
+            Serial.println(trame.size_trame);
+            Serial.print(" command send: ");
+            Serial.println(trame.number_command);
             
             flag = !flag;
             radio_send(&trame);
@@ -187,14 +192,12 @@ void  demo_receirve(void)
 
 void  adress(void)
 {
-    int8_t  i;
     int8_t  bt1, bt2, bt3;
     char    tempo[32];
     char    text[32];
     
     unsigned char old_terminal_adress = terminal_adress;
 
-    i               = 1;
     text[0]         = '\0';
     lcd.clear();
     lcd.set_Cursor(0,0);
@@ -202,7 +205,7 @@ void  adress(void)
     lcd.set_Cursor(0,1);
     lcd.print(terminal_adress);
 
-    while (i)
+    while (!(bt3))
     {
         key_loop(&bt1, &bt2, &bt3);
     
@@ -231,9 +234,6 @@ void  adress(void)
             if (terminal_adress == 255)
               terminal_adress = 254;
         }
-
-   
-        if (bt3)  i = 0;
           lcd.backlight();    // set light ON (in loop, shit code..)  
       }
     lcd.clear();

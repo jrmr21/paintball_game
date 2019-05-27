@@ -50,10 +50,12 @@ void  create_trame(trame_t *t, char network[4], ...)    // work in progress...
   va_end(arg);
   
   t->number_command = i;
+  t->size_trame     = 3 + (t->number_command * 3);
 
   if (t->data = (unsigned char**) malloc(i*(sizeof(char*))))   // malloc numbers of line in tab;
   {
         // realloc zone
+        free(t->data);
         t->data = (unsigned char**)realloc(t->data, i*(sizeof(char*)));
   }
 
@@ -62,17 +64,16 @@ void  create_trame(trame_t *t, char network[4], ...)    // work in progress...
   //Serial.println((int)t->number_command);
      
   for( i = 0; i < t->number_command; i++)
-  {
-    //free(data[i]);
-    
-   if (t->data[i] = (unsigned char*) malloc(4*(sizeof(char))))  // malloc columns of line (4 cases per lines)
-   {
-        // realloc zone
-        t->data[i] = (unsigned char*)realloc(t->data, (4*(sizeof(char))));
-   }
-    t->data[i] = va_arg(arg, char*);
-    
-    if (t->data[i][3] != '\0')  t->data[i][3] = '\0';       // check '\0' is present or not
+  {    
+     if (t->data[i] = (unsigned char*) malloc(4*(sizeof(char))))  // malloc columns of line (4 cases per lines)
+     {
+          // realloc zone
+          free(t->data[i]);
+          t->data[i] = (unsigned char*)realloc(t->data, (4*(sizeof(char))));
+     }
+      t->data[i] = va_arg(arg, char*);
+      
+      if (t->data[i][3] != '\0')  t->data[i][3] = '\0';       // check '\0' is present or not
   }
   
   va_end(arg);
@@ -84,7 +85,7 @@ void  trame_to_str(trame_t *t, char* buf)
 
   buf[0]  = t->adress;
   buf[1]  = t->adress_to;                     // protocol
-  buf[2]  = 3 + (t->number_command * 3);
+  buf[2]  = t->size_trame;
 
   for (int8_t i = 0; (i < t->number_command) ; i += 1)
   {
