@@ -1,14 +1,27 @@
-#include    "core_header.h"
+ #include    "core_header.h"
 
 void  setup() 
 {
   int8_t  pos     = 2;    // option select
   int8_t  frame   = 1;    // frame lvl
+
+
   
   init_pin();
   init_lcd();
   lcd.clear();
-        
+/*
+  trame_t   trame;
+  char network[4];
+  
+      network[0]  = 124;
+      network[1]  = BRODCAST;
+      network[2]  = '\0';
+      
+  create_trame(&trame, network, TIME_START, END_COMMAND);
+  
+  while (1);
+        */
   int8_t bt1, bt2, bt3;
 
   frame1(&frame);                      // default frame
@@ -21,12 +34,12 @@ void  setup()
  
     if (bt1)
     {     
-        if (pos > MIN_item)  pos--;     
-        update_mouse(pos);
+        if (pos > MIN_item)  pos--;       // move mouse UP while it's possible
+        update_mouse(pos);                // refresh mouse
     }
     else if (bt2)
     {
-      if (pos < MAX_item)  pos++;  
+      if (pos < MAX_item)  pos++;         // same code "if(bt1)" but go down
       update_mouse(pos);
     }
     else if (bt3)
@@ -41,7 +54,7 @@ void  setup()
                   frame1(&frame);
                   break;      
                     
-        case 3 :  opt_demo();             //  "-game"; 
+        case 3 :  game_mode();             //  "-game"; 
                   frame2(&frame);
                   break;
         case 4 :  opt_demo();             // "-snd, rcv";  
@@ -76,7 +89,7 @@ void  setup()
       frame2(&frame);
       update_mouse(pos);
     }
-    else if ((pos >= 5) && (pos <= MAX_item) && (frame != 3))  // choice 5 and 6 
+    else if ((pos >= 5) && (pos <= MAX_item) && (frame != 3))      // choice 5 and 6 
     {
       frame3(&frame);
       update_mouse(pos);

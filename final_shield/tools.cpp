@@ -31,7 +31,54 @@ unsigned int decompress_char(unsigned char a[2])
 }
 
 
-void  create_trame(trame_t *t, char* buf)
+void  create_trame(trame_t *t, char network[4], ...)    // work in progress...
+{
+  int8_t    i;
+  char      *data;
+  va_list   arg;                 // create list arg
+
+  va_start(arg, network);            // init start pointer arg_list to *p pointer 
+  t->adress     = network[0];
+  t->adress_to  = network[1];
+  i             = 0;
+  data          = "  \0";
+
+  while (va_arg(arg, char*)[0] != END_COMMAND)
+  {                                   // count number of arguments
+    i++;
+  }
+  va_end(arg);
+  
+  t->number_command = i;
+
+  if (t->data = (unsigned char**) malloc(i*(sizeof(char*))))   // malloc numbers of line in tab;
+  {
+        // realloc zone
+        t->data = (unsigned char**)realloc(t->data, i*(sizeof(char*)));
+  }
+
+  va_start(arg, network);
+  //Serial.print("list: ");
+  //Serial.println((int)t->number_command);
+     
+  for( i = 0; i < t->number_command; i++)
+  {
+    //free(data[i]);
+    
+   if (t->data[i] = (unsigned char*) malloc(4*(sizeof(char))))  // malloc columns of line (4 cases per lines)
+   {
+        // realloc zone
+        t->data[i] = (unsigned char*)realloc(t->data, (4*(sizeof(char))));
+   }
+    t->data[i] = va_arg(arg, char*);
+    
+    if (t->data[i][3] != '\0')  t->data[i][3] = '\0';       // check '\0' is present or not
+  }
+  
+  va_end(arg);
+}
+
+void  trame_to_str(trame_t *t, char* buf)
 {
   buf     = malloc(sizeof(char*) * (3 + (t->number_command * 3)) + 1);
 

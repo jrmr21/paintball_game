@@ -27,16 +27,20 @@ void  radio_receirve(unsigned char *text)
           text[0] = '\0';         // fake clear tab
           
           radio.read(&texto, sizeof(texto));
-          Serial.println(texto[0]);
-
           strcpy(text, texto);
-          Serial.print("msg: ");
-          Serial.println((int)text[0]);
       }  
 }
 
-void  radio_send(const unsigned char *text)
+void  radio_send(trame_t *t)
 {
+  unsigned char *text;
+  
+  //trame_to_str(t, text);
+  
+  while(*text)
+    Serial.print(*text++);
+  Serial.println(" ");
+                                      // WARNING USE CONST OR NOT
   radio.write(text, strlen(text));    // strlen is better of sizeof to calculate size char
   delay(50);
 }

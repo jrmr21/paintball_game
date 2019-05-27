@@ -4,12 +4,12 @@ OPTION MENU SELECT :      /!\ POTENTIAL FAIL WITH SPAM SELECTION /!\
 ===================
 
 
-    "-send data";             //  2
-    "-receirve data";         //  1
-    "-snd, rcv";              //  4
-    "-game";                  //  3
-    "- led";                  //  6
-    "- adress";               //  5
+    "- send data";             //  2
+    "- receirve data";         //  1
+    "- snd, rcv";              //  4
+    "- game";                  //  3
+    "- led";                   //  6
+    "- adress";                //  5
 
 
 
@@ -81,11 +81,15 @@ void  game(void)
 NETWORK DATA :
 ==============
 
+trame:
 
-  | unsigned char adress | 10 unsigned char data |
-   ______________________________________________
+  | unsigned char adress | unsigned char data |
+   ___________________________________________
+   
 
 adress : 0 to 254 (255 is reserved)
-data   : 1 to 255 (0 is empty data)
+data   : 
+          | command |  unsigned char data |  unsigned char data |
+           _____________________________________________________
 
  */

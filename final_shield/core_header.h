@@ -2,6 +2,7 @@
 #define CORE_HEADER
 
 #include <Arduino.h>
+#include <stdarg.h>
 
 // ***********    BUTTON  *****************
 void    key_loop(int8_t *bt1, int8_t *bt2, int8_t *bt3);
@@ -57,7 +58,7 @@ typedef struct    trame_s
   unsigned char   size_trame;
   unsigned char   number_command;
 
-  unsigned char   *data[4]; 
+  unsigned char   **data; 
   
 }                 trame_t;
 
@@ -78,6 +79,7 @@ void  demo_receirve(void);
 void  adress(void);
 void  led(void);
 void  adress(void);
+void  game_mode(void);
 
 
 
@@ -89,17 +91,32 @@ void  adress(void);
 void  radio_init_sender(const byte address[6]);
 void  radio_init_receirve(const byte address[6]);
 void  radio_receirve(unsigned char *text);
-void  radio_send(const unsigned char *text);
+void  radio_send(trame_t *t);
 
 
 // ***********    GAME_ONE   ********************
-void  game_one_master(void);
+void  game_master(void);
 
 
 // ***********    TOOLS   ********************
+#define   END_COMMAND       '\0'
+#define   ERROR_DATA        "ED \0"
+#define   CONFLIT_ADRESS    "CA \0"
+#define   DOUBLE_COMMAND    '#'  
+#define   MASTER_ADRESS     255
+
+#define   TIME_START        "TS \0"       // master command
+#define   TIME_STOP         "TE \0"
+#define   GET_TIME          "TG \0"
+
+#define   TIME             'T'                  // slave command
+#define   SCORE            'S' 
+
+
+void            create_trame(trame_t *t, char network[3], ...);
 unsigned char*  compress_char(unsigned int a);
 unsigned int    decompress_char(unsigned char a[2]);
-void            create_trame(trame_t *t, char* buf);
+void            trame_to_str(trame_t *t, char* buf);
 int             read_trame(trame_s *t, char* buf);
 
 

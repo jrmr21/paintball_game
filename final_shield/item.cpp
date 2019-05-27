@@ -1,6 +1,6 @@
 #include  "core_header.h"
 
-static unsigned char terminal_adress = 0;
+unsigned char terminal_adress = 0;
 
 void  opt_demo(void)
 {
@@ -36,7 +36,7 @@ void  led(void)
       {
           key_loop(&bt1, &bt2, &bt3);
 
-          if ((millis() - mili) > 1500)    // evry 1s
+          if ((millis() - mili) > 1500)    // every 1s
           {
             mili  = millis(); 
              
@@ -60,6 +60,7 @@ void  led(void)
           if (bt3)  i = 0;
           lcd.backlight();    // set light ON (in loop, shit code..)  
       }
+      
       digitalWrite(R, 0);
       digitalWrite(G, 0);
       digitalWrite(B, 0);
@@ -69,14 +70,19 @@ void  led(void)
 void  demo_sender(void)
 {
       int8_t    flag;
-      int8_t    i;
       int8_t    bt1, bt2, bt3;
       uint32_t  mili;           // same "unsigned long" but we don't like write ARDUINO shit
-      unsigned char      test[2];
+      trame_t   trame;
+      char      network[4];
 
-      i     = 1;
       flag  = 0;
+      bt3   = 0;
       mili  = millis();
+          
+      network[0]  = terminal_adress;
+      network[1]  = BRODCAST;
+      network[2]  = '\0';
+      
       lcd.clear();
       lcd.set_Cursor(0,0);                // X, Y
       lcd.print("it's a SENDER demo ");
@@ -84,19 +90,21 @@ void  demo_sender(void)
       lcd.set_Cursor(0,1);
       lcd.print("SEND");
       radio_init_sender("00001");
-      
-      while (i)
+
+      while (!bt3)
       {
           key_loop(&bt1, &bt2, &bt3);
 
           if ((millis() - mili) > 1000)    // evry 1s
           { 
-            test[0] = (flag)? 223 : 130;
-            test[1] = '\0';
-            flag = !flag;
-
-            radio_send(test);
+            (flag)? create_trame(&trame, network, TIME_START) : create_trame(&trame, network, TIME_STOP);
+            Serial.println(" ");
+            for (int b = 0; b < 3; b++)
+              Serial.print((char)trame.data[0][b]);
             
+            flag = !flag;
+            radio_send(&trame);
+
             lcd.set_Cursor(5, 1);
             lcd.print("=>>");
             
@@ -108,18 +116,14 @@ void  demo_sender(void)
              lcd.print("=||");
           }
           
-          if (bt3)  i = 0;
           lcd.backlight();    // set light ON (in loop, shit code..)  
       }
       lcd.clear();
 }
 
-void  game_one(void)
+void  game_mode(void)
 {
-      int8_t  i;
       int8_t  bt1, bt2, bt3;
-
-      i         = 1;
       
       lcd.clear();
       
@@ -129,22 +133,19 @@ void  game_one(void)
       lcd.set_Cursor(0,1);
       lcd.print("1 = M | 2 = G");
       
-      while (i)
+      while (!bt3 || !bt2)
       {
           key_loop(&bt1, &bt2, &bt3);
 
 
           if (bt1)
           {
-            game_one_master();
-            i = 0;
+            game_master();
           }
           else if (bt2)
           {
 
-            i = 0;
           }
-          else if (bt3)  i = 0;
           lcd.backlight();    // set light ON (in loop, shit code..)  
       }
       lcd.clear();
@@ -152,12 +153,10 @@ void  game_one(void)
 
 void  demo_receirve(void)
 {
-      int8_t  i;
       int8_t  bt1, bt2, bt3;
       char    tempo[32];
       unsigned char    text[32];
       
-      i         = 1;
       tempo[0]  = '\0';
       text[0]   = '\0';
       lcd.clear();
@@ -165,7 +164,7 @@ void  demo_receirve(void)
       lcd.print("RECEIRVE demo ");
 
       radio_init_receirve("00001");
-      while (i)
+      while ((!bt3))
       {
           key_loop(&bt1, &bt2, &bt3);
 
@@ -180,8 +179,7 @@ void  demo_receirve(void)
               lcd.set_Cursor(0, 1);
               lcd.print((tempo[0]) + 256);
           }
-          
-          if (bt3)  i = 0;
+
           lcd.backlight();    // set light ON (in loop, shit code..)  
       }
       lcd.clear();
