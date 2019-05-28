@@ -131,15 +131,17 @@ void  game_mode(void)
       int8_t  bt1, bt2, bt3;
       
       lcd.clear();
-      
+
       lcd.set_Cursor(0,0);
       lcd.print(" *** GAME 1 ***");
-
       lcd.set_Cursor(0,1);
-      lcd.print("1 = M | 2 = G");
       
+      lcd.print("1 = M | 2 = G");
+
+      key_loop(&bt1, &bt2, &bt3);
       while (!bt3 || !bt2)
-      {
+      { 
+        
           key_loop(&bt1, &bt2, &bt3);
 
 
@@ -149,14 +151,14 @@ void  game_mode(void)
           }
           else if (bt2)
           {
-
+            game_slave();
           }
           lcd.backlight();    // set light ON (in loop, shit code..)  
       }
       lcd.clear();
 }
 
-void  demo_receirve(void)
+void  demo_receive(void)
 {
       int8_t  bt1, bt2, bt3;
       char    tempo[32];
@@ -166,14 +168,14 @@ void  demo_receirve(void)
       text[0]   = '\0';
       lcd.clear();
       lcd.set_Cursor(0,0);
-      lcd.print("RECEIRVE demo ");
+      lcd.print("receive demo ");
 
-      radio_init_receirve("00001");
+      radio_init_receive("00001");
       while ((!bt3))
       {
           key_loop(&bt1, &bt2, &bt3);
 
-          radio_receirve(tempo);
+          //radio_receive(tempo);
           
           if (strcmp(tempo, text) != 0)   // we have a difference
           {

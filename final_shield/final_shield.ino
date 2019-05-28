@@ -47,7 +47,7 @@ void  setup()
                             //     call item selected
       switch(pos)
       { 
-        case 1 :  demo_receirve();         //  "-receirve data"; 
+        case 1 :  demo_receive();         //  "-receive data"; 
                   frame1(&frame);         //  replay the last frame
                   break;
         case 2 :  demo_sender();         //  "-send data";  

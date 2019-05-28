@@ -75,7 +75,7 @@ void  frame3(int8_t *frame);
 //***********  Item   ************************
 void  opt_demo(void);
 void  demo_sender(void);
-void  demo_receirve(void);
+void  demo_receive(void);
 void  adress(void);
 void  led(void);
 void  adress(void);
@@ -89,13 +89,14 @@ void  game_mode(void);
 //  const byte address[6] = "00001";      EXAMPLE
 
 void  radio_init_sender(const byte address[6]);
-void  radio_init_receirve(const byte address[6]);
-void  radio_receirve(unsigned char *text);
+void  radio_init_receive(const byte address[6]);
+void  radio_receive(trame_t* trame);
 void  radio_send(trame_t *t);
 
 
 // ***********    GAME_ONE   ********************
 void  game_master(void);
+void  game_slave(void);
 
 
 // ***********    TOOLS   ********************

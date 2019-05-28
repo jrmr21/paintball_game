@@ -5,7 +5,7 @@ OPTION MENU SELECT :      /!\ POTENTIAL FAIL WITH SPAM SELECTION /!\
 
 
     "- send data";             //  2
-    "- receirve data";         //  1
+    "- receive data";         //  1
     "- snd, rcv";              //  4
     "- game";                  //  3
     "- led";                   //  6
