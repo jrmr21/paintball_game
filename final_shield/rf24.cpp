@@ -49,32 +49,19 @@ void  radio_receive(trame_t* trame)
 		      trame->number_command = number_command;		  
    //   }
 
-      Serial.print("adress ");
-      Serial.println(trame->adress);
-      Serial.print("adress_to ");
-      Serial.println(trame->adress_to);
-      Serial.print("number_command ");
-      Serial.println(trame->number_command);
 
-      for (i = 0; i < trame->number_command; i++)
-      {
-        Serial.println("");
-        Serial.println((char)trame->data[i][0]);
-        Serial.println((char)trame->data[i][1]);
-        Serial.println((char)trame->data[i][2]);
-        Serial.println("");
-      }
 }
 
 void  radio_send(trame_t *t)
 {
   unsigned char *text;
   
-  //trame_to_str(t, text);
-  
+  trame_to_str(t, text);
+
+  /*Serial.println(" send: ");
   while(*text)
-    Serial.print(*text++);
-  Serial.println(" ");
+    Serial.print((char)*text++);
+  Serial.println(" end send");*/
                                       // WARNING USE CONST OR NOT
   radio.write(text, strlen(text));    // strlen is better of sizeof to calculate size char
   delay(50);
