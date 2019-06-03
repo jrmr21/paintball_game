@@ -112,6 +112,7 @@ void  game_slave(void);
 
 #define   TIME             'T'                  // slave command
 #define   SCORE            'S' 
+#define   GET_TIME          "J  \0"
 
 
 void            create_trame(trame_t *t, char network[3], ...);
