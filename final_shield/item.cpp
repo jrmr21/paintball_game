@@ -74,6 +74,7 @@ void  demo_sender(void)
       uint32_t  mili;           // same "unsigned long" but we don't like write ARDUINO shit
       trame_t   trame;
       char      network[4];
+      unsigned char str[20];
 
       flag  = 0;
       bt3   = 0;
@@ -90,22 +91,19 @@ void  demo_sender(void)
       lcd.set_Cursor(0,1);
       lcd.print("SEND");
       radio_init_sender("00001");
-
+      
+      
       while (!bt3)
       {
           key_loop(&bt1, &bt2, &bt3);
 
-          if ((millis() - mili) > 1000)    // evry 1s
+          if ((millis() - mili) > 500)      //  send 1hz 
           { 
-            (flag)? create_trame(&trame, network, GET_TIME, TIME_START, TIME_START, END_COMMAND) : create_trame(&trame, network, TIME_STOP, GET_TIME, END_COMMAND);
-
             
+            (flag)? create_trame(&trame, network, TIME_GET, TIME_START, TIME_START, END_COMMAND) : create_trame(&trame, network, TIME_STOP, TIME_GET, END_COMMAND);
             flag = !flag;
-            debug_trame(&trame);
 
-            lcd.set_Cursor(5, 1);
-            lcd.print("=>>");
-            
+           
             mili = millis();
           }
           else if ((millis() - mili) > 500)
