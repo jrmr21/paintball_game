@@ -31,7 +31,7 @@ unsigned int decompress_char(unsigned char a[2])
 }
 
 
-void  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progress...
+/*int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progress...
 {
   int8_t             i;
   unsigned char      *data;
@@ -54,14 +54,11 @@ void  create_trame(trame_t *t, unsigned char network[4], ...)    // work in prog
 
   if (t->data = (unsigned char**) malloc(i*(sizeof(unsigned char*))))   // malloc numbers of line in tab;
   {
-        // realloc zone
         free(t->data);
         t->data = (unsigned char**)realloc(t->data, i*(sizeof(unsigned char*)));
   }
 
   va_start(arg, network);
-  //Serial.print("list: ");
-  //Serial.println((int)t->number_command);
      
   for( i = 0; i < t->number_command; i++)
   {    
@@ -77,18 +74,62 @@ void  create_trame(trame_t *t, unsigned char network[4], ...)    // work in prog
   }
   
   va_end(arg);
+}*/
+
+int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progress...
+{
+  int8_t             i;
+  unsigned char      *data;
+  va_list            arg;                 // create list arg
+
+  va_start(arg, network);            // init start pointer arg_list to *p pointer 
+  t->adress     = network[0];
+  t->adress_to  = network[1];
+  i             = 0;
+  data          = "  \0";
+
+  while (va_arg(arg, unsigned char*)[0] != END_COMMAND)
+  {                                   // count number of arguments
+    i++;
+  }
+  va_end(arg);
+  
+  t->number_command = i;
+  t->size_trame     = 3 + (t->number_command * 3);
+
+
+  va_start(arg, network);
+     
+  for( i = 0; i < t->number_command; i++)
+  {    
+      strcpy(t->data[i], va_arg(arg, unsigned char*));
+      if (t->data[i][3] != '\0')  t->data[i][3] = '\0';       // check '\0' is present or not
+  }
+  
+  va_end(arg);
 }
 
-void  trame_to_str(trame_t *t, unsigned char* str)    // work in PROGESS !!!!
+void  debug_trame(trame_t *trame)
 {
-            /*Serial.println(" ");
-            for (int b = 0; b < 3; b++)
-              Serial.print((char)t->data[1][b]);
+      Serial.print("adress ");
+      Serial.println(trame->adress);
+      Serial.print("adress_to ");
+      Serial.println(trame->adress_to);
+      Serial.print("number_command ");
+      Serial.println(trame->number_command);
 
-            Serial.print(" size trame: ");
-            Serial.println(t->size_trame);
-            Serial.print(" command send: ");*/
-            
+      for (int i = 0; i < trame->number_command; i++)
+      {
+        Serial.println("");
+        Serial.print((char)trame->data[i][0]);
+        Serial.print((char)trame->data[i][1]);
+        Serial.print((char)trame->data[i][2]);
+        Serial.println("");
+      }
+      
+}
+void  trame_to_str(trame_t *t, unsigned char* str)    // work in PROGESS !!!!
+{         
   
   if (str = (unsigned char*)malloc(sizeof(unsigned char*) * (3 + (t->number_command * 3)) + 1))
   {
@@ -110,15 +151,5 @@ void  trame_to_str(trame_t *t, unsigned char* str)    // work in PROGESS !!!!
   }
 
   str[(3 + (t->number_command * 3)) + 1] = '\0';
-  
-  Serial.println(" --send: ");
-  for (int b = 0; b < str[2]; b++)
-              Serial.print((char)str[b]);
-  Serial.println(" --end send");
-  
-}
-
-int  read_trame(trame_s *t, unsigned char* buf)
-{
-  
+   
 }

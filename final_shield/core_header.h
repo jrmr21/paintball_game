@@ -18,8 +18,8 @@ void    key_loop(int8_t *bt1, int8_t *bt2, int8_t *bt3);
 #define posX_arrow    14
 #define arrow         "<="
 
-//#define   lcd_ADRESS 0x3F
-#define   lcd_ADRESS 0x27
+#define   lcd_ADRESS 0x3F
+//#define   lcd_ADRESS 0x27
 
 #ifndef LCD                // PROTECT DOUBLE INCLUSION BABY
   #define LCD
@@ -58,7 +58,8 @@ typedef struct    trame_s
   unsigned char   size_trame;
   unsigned char   number_command;
 
-  unsigned char   **data; 
+  //unsigned char   **data; 
+  unsigned char     data[5][4];
   
 }                 trame_t;
 
@@ -114,11 +115,11 @@ void  game_slave(void);
 #define   SCORE            'S' 
 
 
-void            create_trame(trame_t *t, unsigned char network[3], ...);
+int             create_trame(trame_t *t, unsigned char network[4], ...);
 unsigned char*  compress_char(unsigned int a);
 unsigned int    decompress_char(unsigned char a[2]);
 void            trame_to_str(trame_t *t, unsigned char* str);
-int             read_trame(trame_s *t, unsigned char* buf);
+void            debug_trame(trame_t *t);
 
 
 #endif
