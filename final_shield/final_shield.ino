@@ -69,11 +69,6 @@ void  setup()
       frame2(&frame);
       update_mouse(pos);
     }
-    /*else if ((pos >= 7) && (pos <= 8) && (frame != 4))             // choice 3 and 4 
-    {
-      frame2(&frame);
-      update_mouse(pos);
-    }*/
     else if ((pos >= 5) && (pos <= MAX_item) && (frame != 3))      // choice 5 and 6 
     {
       frame3(&frame);

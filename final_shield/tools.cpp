@@ -63,7 +63,33 @@ int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progr
   return (0);       // no bugs
 }
 
-void  debug_trame(trame_t *trame)
+void str_to_trame(trame_t* trame, unsigned char* str)
+{
+    int i = 3;
+    int number_command = 0;
+  
+    trame->adress = str[0];
+    trame->adress_to = str[1];
+      
+    trame->size_trame = str[2];
+          
+    while(str[i] != '\0')
+    {
+        trame->data[number_command][0] = str[i];
+        i++;
+        trame->data[number_command][1] = str[i]; 
+        i++;
+        trame->data[number_command][2] = str[i];
+        i++;
+        
+        number_command++;
+    }
+
+    trame->data[number_command][0] = '\0';
+    trame->number_command = number_command;   
+}
+
+void            debug_trame(trame_t *trame)
 {
       Serial.println("************************** TRAME ****************************");
       Serial.print("adress ");
@@ -110,5 +136,5 @@ int  trame_to_str(trame_t *t, unsigned char str[50])
   }
   
   str[(3 + (t->number_command * 3)) + 1] = '\0';
-  return (0);
+  return (0);  
 }

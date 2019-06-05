@@ -150,6 +150,7 @@ void  demo_receive(void)
       int8_t  bt1, bt2, bt3;
       char    tempo[32];
       unsigned char    text[32];
+      trame_t   trame;
       
       tempo[0]  = '\0';
       text[0]   = '\0';
@@ -158,11 +159,12 @@ void  demo_receive(void)
       lcd.print("receive demo ");
 
       radio_init_receive("00001");
+
       do
       {
           key_loop(&bt1, &bt2, &bt3);
-
-          //radio_receive(tempo);
+          radio_receive(&trame);
+          debug_trame(&trame);
           
           if (strcmp(tempo, text) != 0)   // we have a difference
           {
@@ -182,12 +184,9 @@ void  demo_receive(void)
 
 void  adress(void)
 {
-    int8_t  bt1, bt2, bt3;
-    char    tempo[32];
-    char    text[32];
-    
+    int8_t  bt1, bt2, bt3;  
     unsigned char old_terminal_adress = terminal_adress;
-    text[0]         = '\0';
+
     lcd.clear();
     lcd.set_Cursor(0,0);
     lcd.print("terminal_adress");
@@ -209,22 +208,18 @@ void  adress(void)
         }
         
         if (bt1)
-        {
-            terminal_adress++;
-            // Si on incremente a 255 on passe tout de suite a 0
-            if (terminal_adress == 255)
-              terminal_adress = 0;
-        }
+          terminal_adress++;
         
         if (bt2)
-        {
-            terminal_adress--;
-            // Si on décremente a 0 on passe tout de suite a 254
-            if (terminal_adress == 255)
-              terminal_adress = 254;
-        }
+          terminal_adress--;
+
+        if (terminal_adress > 253)
+          terminal_adress = 5;
+        else if (terminal_adress < 5)
+          terminal_adress = 253;
+          
           lcd.backlight();    // set light ON (in loop, shit code..)  
-      }while (!bt3);
+      } while (!bt3);
       
     lcd.clear();
 }

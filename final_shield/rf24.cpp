@@ -20,13 +20,14 @@ void  radio_init_receive(const byte address[6])
 
 void  radio_receive(trame_t* trame)
 {
-    unsigned char texto[32];
-	  int i = 3;
-	  int number_command = 0;
+
+    unsigned char texto[32] = " ";
 
     if (radio.available()) 
     {
-      radio.read(&texto, sizeof(texto));
+        texto[0] = '\0';
+        radio.read(&texto, sizeof(texto));
+        str_to_trame(trame, texto);
     }
 }
 
