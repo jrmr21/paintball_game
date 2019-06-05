@@ -43,7 +43,6 @@ inline void LiquidCrystal_I2C::write(uint8_t value) {
 // Note, however, that resetting the Arduino doesn't reset the LCD, so we
 // can't assume that its in that state when a sketch starts (and the
 // LiquidCrystal constructor is called).
-
 LiquidCrystal_I2C::LiquidCrystal_I2C(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows)
 {
   _Addr = lcd_Addr;
@@ -304,9 +303,9 @@ void LiquidCrystal_I2C::setBacklight(uint8_t new_val){
 	}
 }
 
-void LiquidCrystal_I2C::printstr(const char c[]){
+void LiquidCrystal_I2C::printstr(char *c){
 	//This function is not identical to the function used for "real" I2C displays
-	//it's here so the user sketch doesn't have to be changed 
+	//it's here so the user sketch doesn't have to be changed
 	print(c);
 }
 
@@ -314,12 +313,12 @@ void LiquidCrystal_I2C::printstr(const char c[]){
 void LiquidCrystal_I2C::putstr(char *data)
 {
   while (*data);
-    write(*data++);  
+    putch(*data++);  
 }
 
 void LiquidCrystal_I2C::putch(char data)
 {
-    write(data);  
+    write(data);
 }
 
 // unsupported API functions

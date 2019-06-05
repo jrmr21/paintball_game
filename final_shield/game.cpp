@@ -37,6 +37,7 @@ void   game_master(void)
         }
         lcd.backlight();    // set light ON (in loop, shit code..)  
     }
+    terminal_adress = 5;    // restart default adress
     lcd.clear();
 }
 

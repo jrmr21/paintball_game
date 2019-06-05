@@ -14,7 +14,7 @@ void  opt_demo(void)
           
           
           lcd.backlight();    // set light ON (in loop, shit code..)  
-      }while (!bt3);
+      } while (!bt3);
       lcd.clear();
 }
 
@@ -53,7 +53,7 @@ void  led(void)
           }
           
           lcd.backlight();    // set light ON (in loop, shit code..)  
-      }while (!bt3);
+      } while (!bt3);
       
       digitalWrite(R, 0);
       digitalWrite(G, 0);
@@ -72,10 +72,10 @@ void  demo_sender(void)
       flag  = 0;
       bt3   = 0;
       mili  = millis();
-          
-      network[0]  = terminal_adress;
-      network[1]  = MASTER_ADRESS;
-      network[2]  = '\0';
+      terminal_adress   = ADRESS_MASTER;
+      network[0]        = terminal_adress;
+      network[1]        = ADRESS_BRODCAST;          // default guy
+      network[2]        = '\0';
       
       lcd.clear();
       lcd.set_Cursor(0,0);                // X, Y
@@ -85,7 +85,6 @@ void  demo_sender(void)
       lcd.print("SEND");
       radio_init_sender("00001");
       
-      
       do
       {
           key_loop(&bt1, &bt2, &bt3);
@@ -94,7 +93,7 @@ void  demo_sender(void)
           {             
               (flag)? create_trame(&trame, network, TIME_GET, TIME_GET, TIME_GET, TIME_START, TIME_START, END_COMMAND) : create_trame(&trame, network, TIME_STOP, TIME_GET, END_COMMAND);
               radio_send(&trame);
-  
+
               flag = !flag;
               mili = millis();
               lcd.set_Cursor(5, 1);
@@ -104,10 +103,12 @@ void  demo_sender(void)
           {
              lcd.set_Cursor(5, 1);
              lcd.print("=||");
-          }
-          
+          }    
           lcd.backlight();    // set light ON (in loop, shit code..)  
-      }while (!bt3);
+      
+      } while (!bt3);
+      
+      terminal_adress = 5;    // restart default adress
       lcd.clear();
 }
 
@@ -126,9 +127,7 @@ void  game_mode(void)
       key_loop(&bt1, &bt2, &bt3);
       do
       { 
-        
           key_loop(&bt1, &bt2, &bt3);
-
 
           if (bt1)
           {
@@ -147,38 +146,37 @@ void  game_mode(void)
 
 void  demo_receive(void)
 {
-      int8_t  bt1, bt2, bt3;
-      char    tempo[32];
-      unsigned char    text[32];
+      int8_t    bt1, bt2, bt3;
+      char      tmp[4];
       trame_t   trame;
+
+      trame.data[0][0]  = '\0';
+      tmp[0]            = '\0';
       
-      tempo[0]  = '\0';
-      text[0]   = '\0';
       lcd.clear();
       lcd.set_Cursor(0,0);
       lcd.print("receive demo ");
 
       radio_init_receive("00001");
-
       do
       {
           key_loop(&bt1, &bt2, &bt3);
           radio_receive(&trame);
-          debug_trame(&trame);
           
-          if (strcmp(tempo, text) != 0)   // we have a difference
-          {
-              strcpy(text, tempo);
-              lcd.set_Cursor(0, 1);
-              lcd.print(clear_line);
-
-              lcd.set_Cursor(0, 1);
-              lcd.print((tempo[0]) + 256);
+          if (trame.data[0][0] != '\0')
+          { 
+            if ((strcmp( tmp, trame.data[0]) != 0) && (trame.adress_to == ADRESS_BRODCAST))
+            {
+              strcpy(tmp, trame.data[0]);
+            }
           }
-
+          
+          lcd.set_Cursor(0, 1);
+          lcd.printstr(tmp);
+          
           lcd.backlight();    // set light ON (in loop, shit code..)  
+      } while (!bt3);
       
-      }while (!bt3);
       lcd.clear();
 }
 
@@ -220,6 +218,5 @@ void  adress(void)
           
           lcd.backlight();    // set light ON (in loop, shit code..)  
       } while (!bt3);
-      
     lcd.clear();
 }
