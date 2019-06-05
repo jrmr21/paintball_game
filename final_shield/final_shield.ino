@@ -4,25 +4,11 @@ void  setup()
 {
   int8_t  pos     = 2;    // option select
   int8_t  frame   = 1;    // frame lvl
-
-
+  int8_t bt1, bt2, bt3;
   
   init_pin();
   init_lcd();
   lcd.clear();
-/*
-  trame_t   trame;
-  char network[4];
-  
-      network[0]  = 124;
-      network[1]  = BRODCAST;
-      network[2]  = '\0';
-      
-  create_trame(&trame, network, TIME_START, END_COMMAND);
-  
-  while (1);
-        */
-  int8_t bt1, bt2, bt3;
 
   frame1(&frame);                      // default frame
   lcd.set_Cursor(posX_arrow, 0);
@@ -43,8 +29,7 @@ void  setup()
       update_mouse(pos);
     }
     else if (bt3)
-    {
-                            //     call item selected
+    {                                   //     call item selected
       switch(pos)
       { 
         case 1 :  demo_receive();         //  "-receive data"; 
@@ -53,14 +38,14 @@ void  setup()
         case 2 :  demo_sender();         //  "-send data";  
                   frame1(&frame);
                   break;      
-                    
+
         case 3 :  game_mode();             //  "-game"; 
                   frame2(&frame);
                   break;
         case 4 :  opt_demo();             // "-snd, rcv";  
                   frame2(&frame);
                   break;
-                  
+
         case 5 :  adress();             
                   frame3(&frame);
                   break;
@@ -80,11 +65,6 @@ void  setup()
       update_mouse(pos);
     }
     else if ((pos >= 3) && (pos <= 4) && (frame != 2))             // choice 3 and 4 
-    {
-      frame2(&frame);
-      update_mouse(pos);
-    }
-    else if ((pos >= 7) && (pos <= 8) && (frame != 4))             // choice 3 and 4 
     {
       frame2(&frame);
       update_mouse(pos);

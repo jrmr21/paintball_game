@@ -35,32 +35,32 @@ int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progr
   int8_t             i;
   unsigned char      *data;
   va_list            arg;                 // create list arg
-
-  va_start(arg, network);            // init start pointer arg_list to *p pointer 
+  va_start(arg, network);            // init start pointer arg_list to *p pointer
+   
   t->adress     = network[0];
   t->adress_to  = network[1];
   i             = 0;
   data          = "  \0";
-
-  while (va_arg(arg, unsigned char*)[0] != END_COMMAND)
-  {                                   // count number of arguments
+  
+  while (va_arg(arg, unsigned char*)[0] != END_COMMAND)                                  // count number of arguments
     i++;
-  }
+
+  if (i > 10)
+    return (1);   // bugs
+    
   va_end(arg);
   
   t->number_command = i;
   t->size_trame     = 3 + (t->number_command * 3);
-
-
+  
   va_start(arg, network);
-     
   for( i = 0; i < t->number_command; i++)
   {    
-      strcpy(t->data[i], va_arg(arg, unsigned char*));
+      strncpy(t->data[i], va_arg(arg, unsigned char*), 3);
       if (t->data[i][3] != '\0')  t->data[i][3] = '\0';       // check '\0' is present or not
   }
-  
   va_end(arg);
+  return (0);       // no bugs
 }
 
 void str_to_trame(trame_t* trame, unsigned char* str)
@@ -86,6 +86,55 @@ void str_to_trame(trame_t* trame, unsigned char* str)
     }
 
     trame->data[number_command][0] = '\0';
-    
-    trame->number_command = number_command;     
+    trame->number_command = number_command;   
+}
+
+void            debug_trame(trame_t *trame)
+{
+      Serial.println("************************** TRAME ****************************");
+      Serial.print("adress ");
+      Serial.println(trame->adress);
+      Serial.print("adress_to ");
+      Serial.println(trame->adress_to);
+      Serial.print("number_command ");
+      Serial.println(trame->number_command);
+      Serial.print("size trame ");
+      Serial.println(trame->size_trame);
+
+      for (int i = 0; i < trame->number_command; i++)
+      {
+        
+        Serial.print((char)trame->data[i][0]);
+        Serial.print((char)trame->data[i][1]);
+        Serial.print((char)trame->data[i][2]);
+        Serial.println("");
+      }
+      Serial.println("adress: ");
+      Serial.println((long) &trame->data, DEC);
+      Serial.println("***********************************************************");
+      Serial.println(" ");
+}
+
+void  print_str(unsigned char* str)
+{
+  for (int i = 0; i < strlen(str); i++)
+    Serial.print(str[i]);
+  Serial.println(" ");
+}
+
+int  trame_to_str(trame_t *t, unsigned char str[50])
+{     
+  str[0]  = t->adress;  
+  str[1]  = t->adress_to;                     // protocol
+  str[2]  = t->size_trame;
+
+  for (int8_t i = 1; (i < t->number_command + 1) ; i++)
+  {
+    str[(i*3)]      = t->data[i - 1][0];
+    str[(i*3) + 1]  = t->data[i - 1][1];
+    str[(i*3) + 2]  = t->data[i - 1][2];
+  }
+  
+  str[(3 + (t->number_command * 3)) + 1] = '\0';
+  return (0);  
 }

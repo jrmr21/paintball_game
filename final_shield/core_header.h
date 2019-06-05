@@ -58,8 +58,8 @@ typedef struct    trame_s
   unsigned char   size_trame;
   unsigned char   number_command;
 
-  //unsigned char   **data; 
-  unsigned char     data[5][4];
+  //unsigned char   **data = NULL; 
+  unsigned char     data[10][4];
   
 }                 trame_t;
 
@@ -109,20 +109,21 @@ void  game_slave(void);
 
 #define   TIME_START        "TS \0"       // master command
 #define   TIME_STOP         "TE \0"
-#define   GET_TIME          "TG \0"
+#define   TIME_GET          "TG \0"
+
 #define   JOIN_VALIDATION   "J1 \0"
+#define   JOIN_REQUEST      "J0 \0" 
 
 #define   TIME             'T'                  // slave command
 #define   SCORE            'S' 
-#define   JOIN_REQUEST     "J0 \0"
 
 
 int             create_trame(trame_t *t, unsigned char network[4], ...);
 unsigned char*  compress_char(unsigned int a);
 unsigned int    decompress_char(unsigned char a[2]);
-void            trame_to_str(trame_t *t, unsigned char* str);
+int             trame_to_str(trame_t *t, unsigned char str[50]);
 void            str_to_trame(trame_t *t, unsigned char* str);
-void            debug_trame(trame_t *t);
+void            debug_trame(trame_t *trame);
 void            print_str(unsigned char* str);
 
 

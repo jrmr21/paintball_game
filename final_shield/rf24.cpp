@@ -20,6 +20,7 @@ void  radio_init_receive(const byte address[6])
 
 void  radio_receive(trame_t* trame)
 {
+
     unsigned char texto[32] = " ";
 
     if (radio.available()) 
@@ -34,15 +35,8 @@ void  radio_receive(trame_t* trame)
 
 void  radio_send(trame_t *t)
 {
-  unsigned char *text;
-  
+  unsigned char text[50] = "\0";  
   trame_to_str(t, text);
-
-  /*Serial.println(" send: ");
-  while(*text)
-    Serial.print((char)*text++);
-  Serial.println(" end send");*/
-                                      // WARNING USE CONST OR NOT
   radio.write(text, strlen(text));    // strlen is better of sizeof to calculate size char
   delay(50);
 }

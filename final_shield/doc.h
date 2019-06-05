@@ -93,3 +93,63 @@ data   :
            _____________________________________________________
 
  */
+
+
+
+
+
+
+
+
+ //          WARNING NUCLEAR BOMB !!!!!!!!!
+/*int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progress...
+{
+  int8_t             i;
+  unsigned char      *data;
+  va_list            arg;                 // create list arg
+
+  va_start(arg, network);            // init start pointer arg_list to *p pointer 
+  t->adress     = network[0];
+  t->adress_to  = network[1];
+  i             = 0;
+
+  while (va_arg(arg, unsigned char*)[0] != END_COMMAND)
+  {                                   // count number of arguments
+    i++;
+  }
+  va_end(arg);
+  
+  Serial.println("step 1");
+  
+  t->size_trame     = 3 + (i * 3);
+
+  if (t->data == NULL)
+  {
+    if (t->data = (unsigned char**) calloc(i, sizeof(t->data)));      // malloc numbers of line in tab;
+  }
+  else if (t->number_command != i)
+  {
+    t->number_command = i;
+    if (t->data = (unsigned char**) realloc(i, sizeof(t->data)));
+  }
+
+  Serial.println("step 2");
+  
+  va_start(arg, network);
+     
+  for( i = 0; i < t->number_command; i++)
+  {    
+    if (t->data[i] == NULL)
+    {
+      if (t->data[i] = (unsigned char*) calloc(4, sizeof(t->data[i])));    // malloc columns of line (4 cases per lines)
+    }
+    else
+    {
+      if (t->data[i] = (unsigned char*) realloc(4, sizeof(t->data[i])));
+    }
+    
+    strcpy(t->data[i], va_arg(arg, unsigned char*));  
+    if (t->data[i][3] != '\0')  t->data[i][3] = '\0';       // check '\0' is present or not
+  }
+  va_end(arg);
+}*/
