@@ -28,7 +28,7 @@ void  radio_receive(trame_t* trame)
         radio.read(&texto, sizeof(texto));
         str_to_trame(trame, texto);
 
-        //debug_trame(trame);
+        debug_trame(trame);
     }
 }
 

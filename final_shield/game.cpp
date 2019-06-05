@@ -57,7 +57,7 @@ void    game_slave(void)
 	//str_to_trame(t, "013J11F22U33\0");
   const char *tmp = "013J11F22U33\0";
   //const char *tmp = "111111111111\0";
-  str_to_trame(&t, tmp);
+  //str_to_trame(&t, tmp);
 /*
     trame_t trame;
     radio_receive(&trame);
