@@ -20,36 +20,16 @@ void  radio_init_receive(const byte address[6])
 
 void  radio_receive(trame_t* trame)
 {
-    unsigned char texto[32] = {1, 255, 15,'J', 1, 1, 'M', 2, 2, 'A', 3, 3, '\0'};
-	  int i = 3;
-	  int number_command = 0;
-    //  if (radio.available()) 
-    //  {
-          //radio.read(&texto, sizeof(texto));
+    unsigned char texto[32] = " ";
 
-		      trame->adress = texto[0];
-		      trame->adress_to = texto[1];
-		  
-		      trame->size_trame = texto[2];
+    if (radio.available()) 
+    {
+        texto[0] = '\0';
+        radio.read(&texto, sizeof(texto));
+        str_to_trame(trame, texto);
 
-     // trame->data[0][0] = 5;
-     // trame->data[0][1] = 5;
-     // trame->data[0][2] = 5;
-		      while(texto[i] != '\0')
-		      {
-		          trame->data[number_command][0] = texto[i];
-			        i++;
-		      	  trame->data[number_command][1] = texto[i]; 
-			        i++;
- 			        trame->data[number_command][2] = texto[i];
-			        i++;
-			  
-			        number_command++;
-		      }
-		      trame->number_command = number_command;		  
-   //   }
-
-
+        //debug_trame(trame);
+    }
 }
 
 void  radio_send(trame_t *t)

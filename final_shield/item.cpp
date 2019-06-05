@@ -156,6 +156,7 @@ void  demo_receive(void)
       int8_t  bt1, bt2, bt3;
       char    tempo[32];
       unsigned char    text[32];
+      trame_t   trame;
       
       tempo[0]  = '\0';
       text[0]   = '\0';
@@ -164,11 +165,11 @@ void  demo_receive(void)
       lcd.print("receive demo ");
 
       radio_init_receive("00001");
-      while ((!bt3))
+      key_loop(&bt1, &bt2, &bt3);
+      while (!bt3)
       {
           key_loop(&bt1, &bt2, &bt3);
-
-          //radio_receive(tempo);
+          radio_receive(&trame);
           
           if (strcmp(tempo, text) != 0)   // we have a difference
           {

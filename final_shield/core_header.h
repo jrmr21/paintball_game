@@ -110,17 +110,20 @@ void  game_slave(void);
 #define   TIME_START        "TS \0"       // master command
 #define   TIME_STOP         "TE \0"
 #define   GET_TIME          "TG \0"
+#define   JOIN_VALIDATION   "J1 \0"
 
 #define   TIME             'T'                  // slave command
 #define   SCORE            'S' 
-#define   GET_TIME          "J  \0"
+#define   JOIN_REQUEST     "J0 \0"
 
 
 int             create_trame(trame_t *t, unsigned char network[4], ...);
 unsigned char*  compress_char(unsigned int a);
 unsigned int    decompress_char(unsigned char a[2]);
 void            trame_to_str(trame_t *t, unsigned char* str);
+void            str_to_trame(trame_t *t, unsigned char* str);
 void            debug_trame(trame_t *t);
+void            print_str(unsigned char* str);
 
 
 #endif

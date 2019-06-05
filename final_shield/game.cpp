@@ -42,14 +42,23 @@ void   game_master(void)
 
 void    game_slave(void)
 {
+	int i = 1; // variable de fin de connexion
+	uint32_t  mili = millis();
+	
 	trame_t trame_send;
 	trame_t trame_receive;
 	
-	    lcd.clear();
+	lcd.clear();
     
     lcd.set_Cursor(0,0);
     lcd.print(" *** SLAVE ***");
 
+  trame_t t;
+	//str_to_trame(t, "013J11F22U33\0");
+  const char *tmp = "013J11F22U33\0";
+  //const char *tmp = "111111111111\0";
+  str_to_trame(&t, tmp);
+/*
     trame_t trame;
     radio_receive(&trame);
 
@@ -58,11 +67,20 @@ void    game_slave(void)
     trame.size_trame = 6;
 
     trame.data[0][0] = 'J';
-    trame.data[0][0] = 0;
-    trame.data[0][0] = 0;
-
+    trame.data[0][0] = '0';
+    trame.data[0][0] = ' ';
     
-    //radio_send(trame);
+	while(i)
+	{
+        // Test du bouton de retour arrière
+        key_loop(&bt1, &bt2, &bt3);		
+        if (bt3) 
+            i = 0;
 
-    
+        if ((millis() - mili) > 500)
+		{
+            radio_send(trame);            
+		}
+	}   
+*/	
 }
