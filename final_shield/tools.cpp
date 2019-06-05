@@ -35,7 +35,8 @@ int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progr
   int8_t             i;
   unsigned char      *data;
   va_list            arg;                 // create list arg
-  va_start(arg, network);            // init start pointer arg_list to *p pointer 
+  va_start(arg, network);            // init start pointer arg_list to *p pointer
+   
   t->adress     = network[0];
   t->adress_to  = network[1];
   i             = 0;
@@ -51,10 +52,11 @@ int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progr
   
   t->number_command = i;
   t->size_trame     = 3 + (t->number_command * 3);
+  
   va_start(arg, network);
   for( i = 0; i < t->number_command; i++)
   {    
-      strcpy(t->data[i], va_arg(arg, unsigned char*));
+      strncpy(t->data[i], va_arg(arg, unsigned char*), 3);
       if (t->data[i][3] != '\0')  t->data[i][3] = '\0';       // check '\0' is present or not
   }
   va_end(arg);
@@ -63,6 +65,7 @@ int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progr
 
 void  debug_trame(trame_t *trame)
 {
+      Serial.println("************************** TRAME ****************************");
       Serial.print("adress ");
       Serial.println(trame->adress);
       Serial.print("adress_to ");
@@ -72,7 +75,6 @@ void  debug_trame(trame_t *trame)
       Serial.print("size trame ");
       Serial.println(trame->size_trame);
 
-      Serial.println("***********************************************************");
       for (int i = 0; i < trame->number_command; i++)
       {
         
@@ -84,25 +86,27 @@ void  debug_trame(trame_t *trame)
       Serial.println("adress: ");
       Serial.println((long) &trame->data, DEC);
       Serial.println("***********************************************************");
+      Serial.println(" ");
 }
 
 void  print_str(unsigned char* str)
 {
   for (int i = 0; i < strlen(str); i++)
-    Serial.print((char)str[i]);
+    Serial.print(str[i]);
+  Serial.println(" ");
 }
 
-int  trame_to_str(trame_t *t, unsigned char* str)    // work in PROGESS !!!!
-{         
-  str[0]  = t->adress;
+int  trame_to_str(trame_t *t, unsigned char str[50])
+{     
+  str[0]  = t->adress;  
   str[1]  = t->adress_to;                     // protocol
   str[2]  = t->size_trame;
 
-  for (int8_t i = 0; (i < t->number_command) ; ++i)
+  for (int8_t i = 1; (i < t->number_command + 1) ; i++)
   {
-    str[(i*3)]      = t->data[i][0];
-    str[(i*3) + 1]  = t->data[i][1];
-    str[(i*3) + 2]  = t->data[i][2];
+    str[(i*3)]      = t->data[i - 1][0];
+    str[(i*3) + 1]  = t->data[i - 1][1];
+    str[(i*3) + 2]  = t->data[i - 1][2];
   }
   
   str[(3 + (t->number_command * 3)) + 1] = '\0';
