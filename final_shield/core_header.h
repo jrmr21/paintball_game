@@ -105,7 +105,8 @@ void  game_slave(void);
 #define   ERROR_DATA        "ED \0"
 #define   CONFLIT_ADRESS    "CA \0"
 #define   DOUBLE_COMMAND    '#'  
-#define   MASTER_ADRESS     255
+#define   ADRESS_BRODCAST   255
+#define   ADRESS_MASTER     254
 
 #define   TIME_START        "TS \0"       // master command
 #define   TIME_STOP         "TE \0"
