@@ -1,9 +1,9 @@
 #include "core_header.h"
 
-void create_command(unsigned char data, unsigned int a, unsigned char p[4])
+void create_command(unsigned char data, unsigned int a, unsigned char p[4])   // we create command with type of command (score, time ect...) and int value
+                                                                              // type of command, value, final command to return (string)
 {
-  p[0]  = data;
-  
+  p[0]  = data; 
   compress_char(a, p+1);
   p[3]  = '\0';
   
@@ -36,7 +36,8 @@ unsigned int decompress_char(unsigned char a[2])
     return res;
 }
 
-int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progress...
+int  create_trame(trame_t *t, unsigned char network[4], ...)    // inilization structure trame, whit network (proctocol) and all data_command + en command
+                                                                // trame to return, protocol, DATA + END_command
 {
   int8_t             i;
   unsigned char      *data;
@@ -69,6 +70,8 @@ int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progr
   return (0);       // no bugs
 }
 
+//
+//
 void str_to_trame(trame_t* trame, unsigned char* str)
 {
     int i = 3;
@@ -95,7 +98,7 @@ void str_to_trame(trame_t* trame, unsigned char* str)
     trame->number_command           = number_command;   
 }
 
-void            debug_trame(trame_t *trame)
+/*void            debug_trame(trame_t *trame)
 {
       Serial.println("************************** TRAME ****************************");
       Serial.print("adress ");
@@ -127,8 +130,10 @@ void  print_str(unsigned char* str)
       Serial.print((char)str[i]);
     Serial.println(" ");
 }
+*/
 
-int  trame_to_str(trame_t *t, unsigned char str[50])
+int  trame_to_str(trame_t *t, unsigned char str[50])   // convertion d'une struct trame en char*
+                                                        //  trame a lire, *str a return
 {     
   str[0]  = t->adress;  
   str[1]  = t->adress_to;                     // protocol

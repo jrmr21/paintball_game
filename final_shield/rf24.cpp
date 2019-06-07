@@ -2,7 +2,7 @@
 
 static RF24 radio(7, 8); // CE, CSN
 
-void  radio_init_sender(const byte address[6])
+void  radio_init_sender(const byte address[6])    // initialisation du mode sender
 {
   radio.begin();
   radio.openWritingPipe(address);
@@ -10,7 +10,7 @@ void  radio_init_sender(const byte address[6])
   radio.stopListening();
 }
 
-void  radio_init_receive(const byte address[6])
+void  radio_init_receive(const byte address[6])   // initialisation du mode receive
 {
   radio.begin();
   radio.openReadingPipe(0, address);
@@ -18,9 +18,8 @@ void  radio_init_receive(const byte address[6])
   radio.startListening();
 }
 
-void  radio_receive(trame_t* trame)
+void  radio_receive(trame_t* trame)           // read data and write all in struct trame
 {
-
     unsigned char texto[32] = " ";
 
     if (radio.available()) 
@@ -31,7 +30,7 @@ void  radio_receive(trame_t* trame)
     }
 }
 
-void  radio_send(trame_t *t)
+void  radio_send(trame_t *t)                // read trame and send data
 {
   unsigned char text[50] = "\0";  
   trame_to_str(t, text);

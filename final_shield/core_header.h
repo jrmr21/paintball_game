@@ -6,6 +6,7 @@
 
 // ***********    BUTTON  *****************
 void    key_loop(int8_t *bt1, int8_t *bt2, int8_t *bt3);
+void    key_time_loop(int *bt1, int *bt2, int *bt3);
 
 
 // ***********    LCD   ********************
@@ -86,7 +87,6 @@ void  game_mode(void);
 // ***********    RADIO   ********************
 #include <nRF24L01.h>
 #include <RF24.h>
-//  const byte address[6] = "00001";      EXAMPLE
 
 void  radio_init_sender(const byte address[6]);
 void  radio_init_receive(const byte address[6]);
@@ -94,7 +94,7 @@ void  radio_receive(trame_t* trame);
 void  radio_send(trame_t *t);
 
 
-// ***********    GAME_ONE   ********************
+// ***********    GAME_INIT   ********************
 void  game_master(void);
 void  game_slave(void);
 
@@ -112,10 +112,19 @@ void  game_slave(void);
 #define   TIME_GET          "TG \0"
 
 #define   JOIN_VALIDATION   "J1 \0"
-#define   JOIN_REQUEST      "J0 \0" 
+#define   JOIN_REQUEST      "J0 \0"
 
-#define   TIME             'T'                  // slave command
-#define   SCORE            'S' 
+#define   GAME_FLAGS_SELECT "GF1\0"
+#define   GAME_BOM_SELECT   "GB1\0"
+
+#define   SORE_GET          "SG"
+
+#define   TEAM_R            'R'
+#define   TEAM_G            'G'
+#define   TEAM_B            'B'
+
+#define   TIME              'T'            // slave command
+#define   SCORE             'S' 
 
 
 void            create_command(unsigned char data, unsigned int a, unsigned char p[4]);
@@ -124,7 +133,7 @@ void            compress_char(unsigned int a, char data[4]);
 unsigned int    decompress_char(unsigned char a[2]);
 int             trame_to_str(trame_t *t, unsigned char str[50]);
 void            str_to_trame(trame_t *t, unsigned char* str);
-void            debug_trame(trame_t *trame);
+//void            debug_trame(trame_t *trame);
 void            print_str(unsigned char* str);
 
 

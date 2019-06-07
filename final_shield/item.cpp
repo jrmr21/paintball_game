@@ -124,7 +124,6 @@ void  game_mode(void)
       
       lcd.print("1 = M | 2 = G");
 
-      key_loop(&bt1, &bt2, &bt3);
       do
       { 
           key_loop(&bt1, &bt2, &bt3);
@@ -132,10 +131,24 @@ void  game_mode(void)
           if (bt1)
           {
             game_master();
+            lcd.clear();
+
+            lcd.set_Cursor(0,0);
+            lcd.print(" *** GAME 1 ***");
+            lcd.set_Cursor(0,1);
+            
+            lcd.print("1 = M | 2 = G");
           }
           else if (bt2)
           {
             game_slave();
+            lcd.clear();
+
+            lcd.set_Cursor(0,0);
+            lcd.print(" *** GAME 1 ***");
+            lcd.set_Cursor(0,1);
+            
+            lcd.print("1 = M | 2 = G");
           }
           lcd.backlight();    // set light ON (in loop, shit code..)      
       }
@@ -165,7 +178,6 @@ void  demo_receive(void)
           
           if (trame.data[0][0] != '\0')
           { 
-            debug_trame(&trame);
             if ((strcmp( tmp, trame.data[0]) != 0) && (trame.adress_to == ADRESS_BRODCAST))
             {
               strcpy(tmp, trame.data[0]);

@@ -11,7 +11,7 @@ void frame1(int8_t *frame)
   lcd.set_Cursor(0, 0);
   lcd.printstr(line1);
   lcd.set_Cursor(0, 1);
-  lcd.printstr(line2);  
+  lcd.printstr(line2);
 
   *frame = 1;
 }
