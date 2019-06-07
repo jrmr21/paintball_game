@@ -2,7 +2,12 @@
 
 extern unsigned char terminal_adress;
 
-void    master_in_flag()
+void  game_flag_slave(void)
+{
+  
+}
+
+void  game_flag_master(void)
 {
   
 }

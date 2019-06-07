@@ -2,6 +2,37 @@
 
 extern unsigned char terminal_adress;
 
+void  game_lobby(void)
+{
+    int8_t  bt1, bt2, bt3;
+    
+    lcd.clear();
+    
+    lcd.set_Cursor(0,0);
+    lcd.print("  *** LOBBY *** ");
+    
+	lcd.set_Cursor(0,1);
+	lcd.print("  FLAG | BOMB   ");
+    
+    do
+    { 
+        key_loop(&bt1, &bt2, &bt3);
+    
+        if (bt1)
+        {
+          //game_flag();
+        }
+        else if (bt2)
+        {
+          //game_bomb();
+        }
+        lcd.backlight();    // set light ON (in loop, shit code..)      
+    }
+    while (!bt3);
+    
+    lcd.clear();
+}
+
 void   game_master(void)                // add gamers in room
 {
     trame_t   trameS;
@@ -74,7 +105,10 @@ void   game_master(void)                // add gamers in room
         }
         
         lcd.backlight();    // set light ON (in loop, shit code..)    
-    } while (!bt3);
+    } while (!bt3 || !bt2);
+
+    if (!bt2)
+		game_lobby();
     
     terminal_adress = 5;    // restart default adress
     lcd.clear();

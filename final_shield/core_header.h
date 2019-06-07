@@ -80,6 +80,7 @@ void  adress(void);
 void  led(void);
 void  adress(void);
 void  game_mode(void);
+void  game_lobby(void)
 
 
 
@@ -94,10 +95,17 @@ void  radio_receive(trame_t* trame);
 void  radio_send(trame_t *t);
 
 
-// ***********    GAME_ONE   ********************
+// ***********    GAME_INIT   ********************
 void  game_master(void);
 void  game_slave(void);
 
+// ***********    GAME_FLAG   ********************
+void  game_flag_slave(void);
+void  game_flag_master(void);
+
+// ***********    GAME_BOMB   ********************
+//void  game_bomb_slave(void);
+//void  game_bomb_master(void);
 
 // ***********    TOOLS   ********************
 #define   END_COMMAND       '\0'
