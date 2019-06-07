@@ -13,7 +13,6 @@ void   game_master(void)                // add gamers in room
     unsigned char     players[10] = {0, 0, 0, 0, 0,
                                     0, 0, 0, 0, 0};     // 10 adress of players
 
-    players[0]          = ADRESS_MASTER;
     cpt_players         = 1;    // master is a player too
     kill_trame          = 0;
     
