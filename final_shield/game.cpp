@@ -13,7 +13,6 @@ void   game_master(void)                // add gamers in room
     unsigned char     players[10] = {0, 0, 0, 0, 0,
                                     0, 0, 0, 0, 0};     // 10 adress of players
 
-    players[0]          = ADRESS_MASTER;
     cpt_players         = 1;    // master is a player too
     kill_trame          = 0;
     
@@ -47,7 +46,7 @@ void   game_master(void)                // add gamers in room
             
                for (int8_t b = 0; b < 10; b++)
                {
-                  if (trameR.adress == players[b] || cpt_players > 10)   // error player
+                  if (trameR.adress == players[b] || cpt_players > 9)   // error player
                   {                                                     // send conflit adress...
                     kill_trame = 1;
                     create_trame(&trameS, network, CONFLIT_ADRESS, END_COMMAND);
