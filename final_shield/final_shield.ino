@@ -13,11 +13,11 @@ void  setup()
   frame1(&frame);                      // default frame
   lcd.set_Cursor(posX_arrow, 0);
   lcd.printstr(arrow);
-  
+
   while (1)
   {
     key_loop(&bt1, &bt2, &bt3);       // GO TO THE DOC 
- 
+
     if (bt1)
     {     
         if (pos > MIN_item)  pos--;       // move mouse UP while it's possible

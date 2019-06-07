@@ -1,10 +1,18 @@
 #include "core_header.h"
 
+void create_command(unsigned char data, unsigned int a, unsigned char p[4])
+{
+  p[0]  = data;
+  
+  compress_char(a, p+1);
+  p[3]  = '\0';
+  
+}
+
 // On encode un int (en base 10) en un nombre en base 255
 // On stocke ce nombre dans un tableau de char pour le dans une trame
-unsigned char* compress_char(unsigned int a)
+void compress_char(unsigned int a, char data[4])
 {
-  unsigned char res[2];
   float f;
 
   // Calcul de res[0]
@@ -12,10 +20,9 @@ unsigned char* compress_char(unsigned int a)
     // Arrondissement a l'inferieur du float
   f = ((int)f > f) ? (int) f - 1 : (int) f;
 
-  res[0] = (int)f;
-  res[1] = a % 255;
+  data[0] = (int)f;
+  data[1] = a % 255;
 
-    return res;
 }
 
 // On decode deux char (en base 255) en un int (en base 10)
@@ -26,7 +33,6 @@ unsigned int decompress_char(unsigned char a[2])
     res = a[0] * 255;
     res += a[1];
 
-    printf("res = %d", res);
     return res;
 }
 
@@ -67,12 +73,11 @@ void str_to_trame(trame_t* trame, unsigned char* str)
 {
     int i = 3;
     int number_command = 0;
-  
-    trame->adress = str[0];
-    trame->adress_to = str[1];
-      
+
+    trame->adress     = str[0];
+    trame->adress_to  = str[1];
     trame->size_trame = str[2];
-          
+    
     while(str[i] != '\0')
     {
         trame->data[number_command][0] = str[i];
@@ -81,12 +86,13 @@ void str_to_trame(trame_t* trame, unsigned char* str)
         i++;
         trame->data[number_command][2] = str[i];
         i++;
-        
+        trame->data[number_command][3] = '\0';
+
         number_command++;
     }
 
-    trame->data[number_command][0] = '\0';
-    trame->number_command = number_command;   
+    trame->data[number_command][0]  = '\0';
+    trame->number_command           = number_command;   
 }
 
 void            debug_trame(trame_t *trame)
@@ -103,12 +109,12 @@ void            debug_trame(trame_t *trame)
 
       for (int i = 0; i < trame->number_command; i++)
       {
-        
         Serial.print((char)trame->data[i][0]);
         Serial.print((char)trame->data[i][1]);
         Serial.print((char)trame->data[i][2]);
         Serial.println("");
       }
+      
       Serial.println("adress: ");
       Serial.println((long) &trame->data, DEC);
       Serial.println("***********************************************************");
@@ -117,9 +123,9 @@ void            debug_trame(trame_t *trame)
 
 void  print_str(unsigned char* str)
 {
-  for (int i = 0; i < strlen(str); i++)
-    Serial.print(str[i]);
-  Serial.println(" ");
+    for (int i = 0; (i < strlen(str)) || (str[i] != '\0'); i++)
+      Serial.print((char)str[i]);
+    Serial.println(" ");
 }
 
 int  trame_to_str(trame_t *t, unsigned char str[50])
@@ -130,9 +136,9 @@ int  trame_to_str(trame_t *t, unsigned char str[50])
 
   for (int8_t i = 1; (i < t->number_command + 1) ; i++)
   {
-    str[(i*3)]      = t->data[i - 1][0];
-    str[(i*3) + 1]  = t->data[i - 1][1];
-    str[(i*3) + 2]  = t->data[i - 1][2];
+    str[(i * 3)]      = t->data[i - 1][0];
+    str[(i * 3) + 1]  = t->data[i - 1][1];
+    str[(i * 3) + 2]  = t->data[i - 1][2];
   }
   
   str[(3 + (t->number_command * 3)) + 1] = '\0';
