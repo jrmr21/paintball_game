@@ -95,7 +95,7 @@ void str_to_trame(trame_t* trame, unsigned char* str)
     trame->number_command           = number_command;   
 }
 
-void            debug_trame(trame_t *trame)
+/*void            debug_trame(trame_t *trame)
 {
       Serial.println("************************** TRAME ****************************");
       Serial.print("adress ");
@@ -126,7 +126,7 @@ void  print_str(unsigned char* str)
     for (int i = 0; (i < strlen(str)) || (str[i] != '\0'); i++)
       Serial.print((char)str[i]);
     Serial.println(" ");
-}
+}*/
 
 int  trame_to_str(trame_t *t, unsigned char str[50])
 {     

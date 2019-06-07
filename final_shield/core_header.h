@@ -6,6 +6,7 @@
 
 // ***********    BUTTON  *****************
 void    key_loop(int8_t *bt1, int8_t *bt2, int8_t *bt3);
+void    key_time_loop(int *bt1, int *bt2, int *bt3);
 
 
 // ***********    LCD   ********************

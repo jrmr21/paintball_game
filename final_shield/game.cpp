@@ -148,6 +148,10 @@ void    game_slave(void)
             lcd.print((!connection)? "FAIL connect...": " CONNECTED");
             trameR.data[0][0] = '\0';
         }
+        else
+        {
+          
+        }
 
         lcd.backlight();    // set light ON (in loop, shit code..)    
     } while (!bt3);

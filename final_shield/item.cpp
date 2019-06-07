@@ -156,8 +156,8 @@ void  demo_receive(void)
       lcd.clear();
       lcd.set_Cursor(0,0);
       lcd.print("receive demo ");
-
       radio_init_receive("00001");
+      
       do
       {
           key_loop(&bt1, &bt2, &bt3);
@@ -165,7 +165,7 @@ void  demo_receive(void)
           
           if (trame.data[0][0] != '\0')
           { 
-            debug_trame(&trame);
+            //  debug_trame(&trame);
             if ((strcmp( tmp, trame.data[0]) != 0) && (trame.adress_to == ADRESS_BRODCAST))
             {
               strcpy(tmp, trame.data[0]);
