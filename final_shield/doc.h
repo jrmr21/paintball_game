@@ -83,23 +83,27 @@ NETWORK DATA :
 
 trame:
 
-  | unsigned char adress | unsigned char data |
-   ___________________________________________
+  | unsigned char adress | unsigned char adress  |  unsigned char size  |   data...   |
+   __________________________________________________________________________________
+
+   (  who i am  | who i send  | size trame (without end '\0') | data... | )
    
 
-adress : 0 to 254 (255 is reserved)
+adress : 5 to 253 (other are reserved)
 data   : 
-          | command |  unsigned char data |  unsigned char data |
+          | command |  unsigned char data |  unsigned char data|
            _____________________________________________________
 
- */
+
+DEMO COMPRESS CHAR AND READ :
+============================
+
+    unsigned char pt[4];
+    create_command(SCORE, 2050, pt);
+    Serial.println(decompress_char(pt + 1));
 
 
-
-
-
-
-
+*/
 
  //          WARNING NUCLEAR BOMB !!!!!!!!!
 /*int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progress...

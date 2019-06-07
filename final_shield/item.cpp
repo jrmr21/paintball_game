@@ -165,6 +165,7 @@ void  demo_receive(void)
           
           if (trame.data[0][0] != '\0')
           { 
+            debug_trame(&trame);
             if ((strcmp( tmp, trame.data[0]) != 0) && (trame.adress_to == ADRESS_BRODCAST))
             {
               strcpy(tmp, trame.data[0]);

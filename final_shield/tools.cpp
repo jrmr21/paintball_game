@@ -1,10 +1,18 @@
 #include "core_header.h"
 
+void create_command(unsigned char data, unsigned int a, unsigned char p[4])
+{
+  p[0]  = data;
+  
+  compress_char(a, p+1);
+  p[3]  = '\0';
+  
+}
+
 // On encode un int (en base 10) en un nombre en base 255
 // On stocke ce nombre dans un tableau de char pour le dans une trame
-unsigned char* compress_char(unsigned int a)
+void compress_char(unsigned int a, char data[4])
 {
-  unsigned char res[2];
   float f;
 
   // Calcul de res[0]
@@ -12,10 +20,9 @@ unsigned char* compress_char(unsigned int a)
     // Arrondissement a l'inferieur du float
   f = ((int)f > f) ? (int) f - 1 : (int) f;
 
-  res[0] = (int)f;
-  res[1] = a % 255;
+  data[0] = (int)f;
+  data[1] = a % 255;
 
-    return res;
 }
 
 // On decode deux char (en base 255) en un int (en base 10)

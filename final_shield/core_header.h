@@ -39,9 +39,9 @@ void  init_lcd(void);
  */
 
 // **********   ALL   *********************
-#define   B   2   // min 150 to max 255 to ONE pin
+#define   B   4   // min 150 to max 255 to ONE pin
 #define   G   3
-#define   R   4
+#define   R   2
 
 #define btn1  5
 #define btn2  6
@@ -118,8 +118,9 @@ void  game_slave(void);
 #define   SCORE            'S' 
 
 
+void            create_command(unsigned char data, unsigned int a, unsigned char p[4]);
 int             create_trame(trame_t *t, unsigned char network[4], ...);
-unsigned char*  compress_char(unsigned int a);
+void            compress_char(unsigned int a, char data[4]);
 unsigned int    decompress_char(unsigned char a[2]);
 int             trame_to_str(trame_t *t, unsigned char str[50]);
 void            str_to_trame(trame_t *t, unsigned char* str);

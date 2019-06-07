@@ -10,7 +10,8 @@ void   game_master(void)                // add gamers in room
     int8_t            bt1, bt2, bt3;
     int8_t            cpt_players, kill_trame;
     char              network[4];
-    unsigned char     players[10];     // 10 adress of players
+    unsigned char     players[10] = {0, 0, 0, 0, 0,
+                                    0, 0, 0, 0, 0};     // 10 adress of players
 
     players[0]          = ADRESS_MASTER;
     cpt_players         = 1;    // master is a player too
@@ -41,6 +42,7 @@ void   game_master(void)                // add gamers in room
           if ((strcmp( JOIN_REQUEST, trameR.data[0]) == 0))   // we have a join request 
           {
               radio_init_sender("00001");           // change mode sender
+              delay(10);
               network[1] = trameR.adress;
             
                for (int8_t b = 0; b < 10; b++)
@@ -59,8 +61,9 @@ void   game_master(void)                // add gamers in room
                }
                else
                 kill_trame = 0;                   // reset kill accept
+
               radio_send(&trameS);                // send trame
-              radio_init_receive("00001");        // change mode receive
+              radio_send(&trameS);                // send trame
           }
           
           trameR.data[0][0]  = '\0';      // reset trame receive
@@ -68,6 +71,7 @@ void   game_master(void)                // add gamers in room
           lcd.printstr("players: ");
           lcd.set_Cursor(10, 1);
           lcd.print(cpt_players);
+          radio_init_receive("00001");        // change mode receive
         }
         
         lcd.backlight();    // set light ON (in loop, shit code..)    
@@ -79,45 +83,78 @@ void   game_master(void)                // add gamers in room
 
 void    game_slave(void)
 {
-	int i = 1; // variable de fin de connexion
-	uint32_t  mili = millis();
-	
-	trame_t trame_send;
-	trame_t trame_receive;
-	
-	lcd.clear();
-    
+	  trame_t   trameS;
+    trame_t   trameR;
+
+    int8_t            bt1, bt2, bt3;
+    uint8_t           connection;
+    char              network[4];
+
+    connection          = 0;
+    trameR.data[0][0]   = '\0';
+    network[0]          = terminal_adress;
+    network[1]          = ADRESS_MASTER;          // default guy
+    network[2]          = '\0';
+
+    digitalWrite(R, 1);
+    digitalWrite(G, 1);
+    digitalWrite(B, 0);
+            
+    lcd.clear();
     lcd.set_Cursor(0,0);
     lcd.print(" *** SLAVE ***");
+    lcd.set_Cursor(0, 1);
+    lcd.printstr("no connected..");
 
-  trame_t t;
-	//str_to_trame(t, "013J11F22U33\0");
-  const char *tmp = "013J11F22U33\0";
-  //const char *tmp = "111111111111\0";
-  str_to_trame(&t, tmp);
-/*
-    trame_t trame;
-    radio_receive(&trame);
+    do
+    {
+        key_loop(&bt1, &bt2, &bt3);
 
-    trame.adress = terminal_adress;
-    trame.adress_to = 255;
-    trame.size_trame = 6;
+        if (bt2 && (!connection))                     // if you are connected you can't connect again
+        {
+            radio_init_sender("00001");                                   // change mode sender
+            create_trame(&trameS, network, JOIN_REQUEST, END_COMMAND);
+            radio_send(&trameS);
 
-    trame.data[0][0] = 'J';
-    trame.data[0][0] = '0';
-    trame.data[0][0] = ' ';
+            delay(10);
+            radio_init_receive("00001");                          // change mode receive
+            delay(10);
+            
+            lcd.set_Cursor(0, 1);
+            lcd.print(clear_line);
+            lcd.set_Cursor(0, 1);
+            lcd.print("try connection..");
+
+            for (uint8_t j = 0; (j < 200) && (!connection); j++)                     // wait receive data 200ms with 200 try
+            {
+              radio_receive(&trameR);
+              
+              if (trameR.data[0][0] != '\0')                          // we have a data
+              {
+                Serial.println("receive");
+                if ((strcmp( JOIN_VALIDATION, trameR.data[0]) == 0))   // we have a join accept
+                {
+                  connection = 1;
+                  digitalWrite(R, 0);
+                  digitalWrite(G, 0);
+                  digitalWrite(B, 1);
+                }
+              }
+              delay(1);
+            }
+            lcd.set_Cursor(0, 1);
+            lcd.print(clear_line);
+            lcd.set_Cursor(0, 1);
+            lcd.print((!connection)? "FAIL connect...": " CONNECTED");
+            trameR.data[0][0] = '\0';
+        }
+
+        lcd.backlight();    // set light ON (in loop, shit code..)    
+    } while (!bt3);
+
+    digitalWrite(R, 0);
+    digitalWrite(G, 0);
+    digitalWrite(B, 0);
+    lcd.clear();	
     
-	while(i)
-	{
-        // Test du bouton de retour arrière
-        key_loop(&bt1, &bt2, &bt3);		
-        if (bt3) 
-            i = 0;
-
-        if ((millis() - mili) > 500)
-		{
-            radio_send(trame);            
-		}
-	}   
-*/	
 }
