@@ -18,8 +18,8 @@ void    key_loop(int8_t *bt1, int8_t *bt2, int8_t *bt3);
 #define posX_arrow    14
 #define arrow         "<="
 
-//#define   lcd_ADRESS 0x3F
-#define   lcd_ADRESS 0x27
+#define   lcd_ADRESS 0x3F
+//#define   lcd_ADRESS 0x27
 
 #ifndef LCD                // PROTECT DOUBLE INCLUSION BABY
   #define LCD
@@ -80,7 +80,7 @@ void  adress(void);
 void  led(void);
 void  adress(void);
 void  game_mode(void);
-void  game_lobby(void)
+void  game_lobby(void);
 
 
 
@@ -100,8 +100,9 @@ void  game_master(void);
 void  game_slave(void);
 
 // ***********    GAME_FLAG   ********************
-void  game_flag_slave(void);
+void  game_flag_slave(int game_time);
 void  game_flag_master(void);
+int[] game_flag(int game_time);
 
 // ***********    GAME_BOMB   ********************
 //void  game_bomb_slave(void);
@@ -114,6 +115,9 @@ void  game_flag_master(void);
 #define   DOUBLE_COMMAND    '#'  
 #define   ADRESS_BRODCAST   255
 #define   ADRESS_MASTER     254
+
+#define   GAME_FLAGS_SELECT "GF1\0"
+#define   GAME_BOM_SELECT   "GB1\0"
 
 #define   TIME_START        "TS \0"       // master command
 #define   TIME_STOP         "TE \0"

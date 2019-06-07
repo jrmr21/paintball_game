@@ -105,10 +105,23 @@ void   game_master(void)                // add gamers in room
         }
         
         lcd.backlight();    // set light ON (in loop, shit code..)    
-    } while (!bt3 || !bt2);
 
-    if (!bt2)
-		game_lobby();
+        if (bt2)
+        {
+			game_lobby();
+			
+			// On réaffiche le menu master
+            lcd.clear();
+            lcd.set_Cursor(0,0);
+            lcd.print(" *** MASTER ***");
+            lcd.set_Cursor(0, 1);
+            lcd.printstr("players: ");
+            lcd.set_Cursor(10, 1);
+            lcd.print(cpt_players);
+        }
+
+            
+    } while (!bt3);
     
     terminal_adress = 5;    // restart default adress
     lcd.clear();
@@ -116,6 +129,8 @@ void   game_master(void)                // add gamers in room
 
 void    game_slave(void)
 {
+	game_flag_slave(5); //////////////////////////////////////////////////////////////////////////////////////////
+	
     trame_t   trameS;
     trame_t   trameR;
 
@@ -181,6 +196,20 @@ void    game_slave(void)
             lcd.print((!connection)? "FAIL connect...": " CONNECTED");
             trameR.data[0][0] = '\0';
         }
+		else if (connection) 
+		{
+			radio_init_receive("00001");                          // change mode receive
+            delay(10);
+			
+			radio_receive(&trameR);
+			
+			if ((strcmp( GAME_FLAGS_SELECT, trameR.data[0]) == 0) && (TIME == trameR.data[1][0]))
+			{
+				int game_time = decompress_char(trameR.data[1][0] + 1);
+				
+				tab = game_flag_slave(game_time);		
+			}	
+		}
 
         lcd.backlight();    // set light ON (in loop, shit code..)    
     } while (!bt3);
