@@ -2,6 +2,48 @@
 
 extern unsigned char terminal_adress;
 
+void  game_lobby(const unsigned char  players[10])
+{
+    int8_t  bt1, bt2, bt3;
+    
+    lcd.clear();
+    
+    lcd.set_Cursor(0,0);
+    lcd.print("  *** LOBBY *** ");
+
+    lcd.set_Cursor(0,1);
+    lcd.print("  FLAG | BOMB   ");
+    
+    do
+    { 
+        key_loop(&bt1, &bt2, &bt3);
+    
+        if (bt2)
+        {
+          Serial.println(" calllllll ");
+          game_flag_master( players );
+          lcd.set_Cursor(0,0);
+          lcd.print("  *** LOBBY *** ");
+      
+          lcd.set_Cursor(0,1);
+          lcd.print("  FLAG | BOMB   ");
+        }
+        else if (bt1)
+        {
+          //game_bomb_master();
+          lcd.set_Cursor(0,0);
+          lcd.print("  *** LOBBY *** ");
+      
+          lcd.set_Cursor(0,1);
+          lcd.print("  FLAG | BOMB   ");
+        }
+        lcd.backlight();    // set light ON (in loop, shit code..)      
+    }
+    while (!bt3);
+    
+    lcd.clear();
+}
+
 void   game_master(void)                // add gamers in room
 {
     trame_t   trameS;
@@ -65,13 +107,23 @@ void   game_master(void)                // add gamers in room
               radio_send(&trameS);                // send trame
               radio_send(&trameS);                // send trame
           }
-          
           trameR.data[0][0]  = '\0';      // reset trame receive
           lcd.set_Cursor(0, 1);
           lcd.printstr("players: ");
           lcd.set_Cursor(10, 1);
           lcd.print(cpt_players);
           radio_init_receive("00001");        // change mode receive
+        }
+        else if (bt2 || bt1)
+        {
+          game_lobby(players);
+          
+          lcd.set_Cursor(0,0);
+          lcd.print(" *** MASTER ***");
+          lcd.set_Cursor(0, 1);
+          lcd.printstr("players: ");
+          lcd.set_Cursor(10, 1);
+          lcd.print(cpt_players);
         }
         
         lcd.backlight();    // set light ON (in loop, shit code..)    
@@ -148,9 +200,20 @@ void    game_slave(void)
             lcd.print((!connection)? "FAIL connect...": " CONNECTED");
             trameR.data[0][0] = '\0';
         }
-        else
+        else if (connection) 
         {
+          radio_init_receive("00001");                          // change mode receive
+                delay(10);
           
+          radio_receive(&trameR);
+          
+          if ((strcmp( GAME_FLAGS_SELECT, trameR.data[0]) == 0) && (TIME == trameR.data[1][0]))
+          {
+            int game_time = decompress_char(trameR.data[1][0] + 1);
+            int tab[3]    = {0};
+            
+            game_flag_slave(game_time, tab);   
+          } 
         }
 
         lcd.backlight();    // set light ON (in loop, shit code..)    

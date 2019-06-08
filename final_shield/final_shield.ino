@@ -5,7 +5,6 @@ void  setup()
   int8_t  pos     = 2;    // option select
   int8_t  frame   = 1;    // frame lvl
   int8_t bt1, bt2, bt3;
-  int t1,  t2,  t3;
   
   init_pin();
   init_lcd();
@@ -18,8 +17,6 @@ void  setup()
   while (1)
   {
     key_loop(&bt1, &bt2, &bt3);       // GO TO THE DOC 
-    key_time_loop(&t1, &t2, &t3);
-    Serial.println((int)t1);
 
     if (bt1)
     {     

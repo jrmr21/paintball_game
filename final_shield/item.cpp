@@ -121,8 +121,7 @@ void  game_mode(void)
       lcd.set_Cursor(0,0);
       lcd.print(" *** GAME 1 ***");
       lcd.set_Cursor(0,1);
-      
-      lcd.print("1 = M | 2 = G");
+      lcd.print(" User | Admin");
 
       key_loop(&bt1, &bt2, &bt3);
       do
@@ -132,10 +131,18 @@ void  game_mode(void)
           if (bt1)
           {
             game_master();
+            lcd.set_Cursor(0,0);
+            lcd.print(" *** GAME 1 ***");
+            lcd.set_Cursor(0,1);
+            lcd.print(" User | Admin");
           }
           else if (bt2)
           {
             game_slave();
+            lcd.set_Cursor(0,0);
+            lcd.print(" *** GAME 1 ***");
+            lcd.set_Cursor(0,1);
+            lcd.print(" User | Admin");
           }
           lcd.backlight();    // set light ON (in loop, shit code..)      
       }
@@ -165,7 +172,6 @@ void  demo_receive(void)
           
           if (trame.data[0][0] != '\0')
           { 
-            //  debug_trame(&trame);
             if ((strcmp( tmp, trame.data[0]) != 0) && (trame.adress_to == ADRESS_BRODCAST))
             {
               strcpy(tmp, trame.data[0]);
