@@ -28,6 +28,10 @@ void  radio_receive(trame_t* trame)
     {
         texto[0] = '\0';
         radio.read(&texto, sizeof(texto));
+        
+        print_str(texto);
+        print_str((unsigned char)texto[7]);
+        
         str_to_trame(trame, texto);
         
         if ((trame->adress_to != ADRESS_BRODCAST) && (trame->adress_to != terminal_adress)) // check if you can read or not
@@ -42,6 +46,7 @@ void  radio_send(trame_t *t)
 {
   unsigned char text[50] = "\0";  
   trame_to_str(t, text);
-  radio.write(text, strlen(text));    // strlen is better of sizeof to calculate size char
+
+  radio.write(text, t->size_trame);    // strlen is better of sizeof to calculate size char
   delay(50);
 }

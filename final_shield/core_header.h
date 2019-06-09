@@ -125,16 +125,20 @@ void  game_flag(int game_time, int res[3]);
 #define   GAME_FLAGS_SELECT "GF1\0"
 #define   GAME_BOM_SELECT   "GB1\0"
 
+#define   TEAM_RED          'R'
+#define   TEAM_GREEN        'G'
+#define   TEAM_BLUE         'B'
+
 #define   JOIN_VALIDATION   "J1 \0"
 #define   JOIN_REQUEST      "J0 \0" 
 
 #define   TIME             'T'                  // slave command
-#define   SCORE            'S' 
+#define   SCORE            'S'
 
 
 void            create_command(unsigned char data, unsigned int a, unsigned char p[4]);
 int             create_trame(trame_t *t, unsigned char network[4], ...);
-void            compress_char(unsigned int a, char data[4]);
+void            compress_char(unsigned int a, unsigned char data[2]);
 unsigned int    decompress_char(unsigned char a[2]);
 int             trame_to_str(trame_t *t, unsigned char str[50]);
 void            str_to_trame(trame_t *t, unsigned char* str);

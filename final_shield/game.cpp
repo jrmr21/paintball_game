@@ -103,6 +103,7 @@ void   game_master(void)                // add gamers in room
                else
                 kill_trame = 0;                   // reset kill accept
 
+              delay(5);
               radio_send(&trameS);                // send trame
               radio_send(&trameS);                // send trame
           }
@@ -205,9 +206,14 @@ void    game_slave(void)
 
           if (trameR.data[0][0] != '\0')
           {
+            //Serial.println(decompress_char(trameR.data[1] + 1));
+            //Serial.println((unsigned char)trameR.data[1][2]);
+            
             if ((strcmp( GAME_FLAGS_SELECT, trameR.data[0]) == 0) && (TIME == trameR.data[1][0]))
             {
-              int game_time = decompress_char(trameR.data[1] + 1); // convertion S to ms
+              int game_time = decompress_char(trameR.data[1] + 1);    // Second
+
+              //Serial.println(game_time);
               
               game_flag_slave(game_time);
               trameR.data[0][0] = '\0';
@@ -220,10 +226,8 @@ void    game_slave(void)
             lcd.set_Cursor(0,0);
             lcd.print(" *** SLAVE ***");
             lcd.set_Cursor(0, 1);
-            lcd.printstr("no connected..");
+            lcd.printstr(" CONNECTED *");
           }
-              
-
         }
 
         lcd.backlight();    // set light ON (in loop, shit code..)    
