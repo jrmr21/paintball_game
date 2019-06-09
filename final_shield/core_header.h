@@ -96,7 +96,7 @@ void  radio_send(trame_t *t);
 
 
 // ***********    FLAGS GAME   ********************
-void  game_flag_slave(int game_time, int res[3]);
+void  game_flag_slave(int game_time);
 void  game_flag_master(const unsigned char players[10]);
 
 void  game_flag(int game_time, int res[3]);

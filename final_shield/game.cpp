@@ -20,7 +20,6 @@ void  game_lobby(const unsigned char  players[10])
     
         if (bt2)
         {
-          Serial.println(" calllllll ");
           game_flag_master( players );
           lcd.set_Cursor(0,0);
           lcd.print("  *** LOBBY *** ");
@@ -84,7 +83,7 @@ void   game_master(void)                // add gamers in room
           if ((strcmp( JOIN_REQUEST, trameR.data[0]) == 0))   // we have a join request 
           {
               radio_init_sender("00001");           // change mode sender
-              delay(10);
+              delay(5);
               network[1] = trameR.adress;
             
                for (int8_t b = 0; b < 10; b++)
@@ -183,13 +182,13 @@ void    game_slave(void)
               
               if (trameR.data[0][0] != '\0')                          // we have a data
               {
-                Serial.println("receive");
                 if ((strcmp( JOIN_VALIDATION, trameR.data[0]) == 0))   // we have a join accept
                 {
                   connection = 1;
                   digitalWrite(R, 0);
                   digitalWrite(G, 0);
                   digitalWrite(B, 1);
+                  radio_init_receive("00001");                          // change mode receive
                 }
               }
               delay(1);
@@ -201,19 +200,30 @@ void    game_slave(void)
             trameR.data[0][0] = '\0';
         }
         else if (connection) 
-        {
-          radio_init_receive("00001");                          // change mode receive
-                delay(10);
-          
+        {   
           radio_receive(&trameR);
-          
-          if ((strcmp( GAME_FLAGS_SELECT, trameR.data[0]) == 0) && (TIME == trameR.data[1][0]))
+
+          if (trameR.data[0][0] != '\0')
           {
-            int game_time = decompress_char(trameR.data[1][0] + 1);
-            int tab[3]    = {0};
-            
-            game_flag_slave(game_time, tab);   
-          } 
+            if ((strcmp( GAME_FLAGS_SELECT, trameR.data[0]) == 0) && (TIME == trameR.data[1][0]))
+            {
+              int game_time = decompress_char(trameR.data[1] + 1); // convertion S to ms
+              
+              game_flag_slave(game_time);
+              trameR.data[0][0] = '\0';
+            }
+            else if ((strcmp( GAME_BOM_SELECT, trameR.data[0]) == 0) && (TIME == trameR.data[1][0]))
+            {
+                // BOMB GAME ADD HERE
+            }
+
+            lcd.set_Cursor(0,0);
+            lcd.print(" *** SLAVE ***");
+            lcd.set_Cursor(0, 1);
+            lcd.printstr("no connected..");
+          }
+              
+
         }
 
         lcd.backlight();    // set light ON (in loop, shit code..)    
