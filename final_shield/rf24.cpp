@@ -1,6 +1,7 @@
 #include "core_header.h"
 
-static RF24 radio(7, 8); // CE, CSN
+static RF24           radio(7, 8); // CE, CSN
+extern unsigned char  terminal_adress;
 
 void  radio_init_sender(const byte address[6])    // initialisation du mode sender
 {
@@ -26,7 +27,17 @@ void  radio_receive(trame_t* trame)           // read data and write all in stru
     {
         texto[0] = '\0';
         radio.read(&texto, sizeof(texto));
+        
+        print_str(texto);
+        print_str((unsigned char)texto[7]);
+        
         str_to_trame(trame, texto);
+        
+        if ((trame->adress_to != ADRESS_BRODCAST) && (trame->adress_to != terminal_adress)) // check if you can read or not
+                                                                                            //  your adress or brodcast
+        {
+          trame->data[0][0] = '\0';
+        }
     }
 }
 
@@ -34,6 +45,7 @@ void  radio_send(trame_t *t)                // read trame and send data
 {
   unsigned char text[50] = "\0";  
   trame_to_str(t, text);
-  radio.write(text, strlen(text));    // strlen is better of sizeof to calculate size char
+
+  radio.write(text, t->size_trame);    // strlen is better of sizeof to calculate size char
   delay(50);
 }

@@ -121,8 +121,7 @@ void  game_mode(void)
       lcd.set_Cursor(0,0);
       lcd.print(" *** GAME 1 ***");
       lcd.set_Cursor(0,1);
-      
-      lcd.print("1 = M | 2 = G");
+      lcd.print(" User | Admin");
 
       do
       { 
@@ -131,6 +130,7 @@ void  game_mode(void)
           if (bt1)
           {
             game_master();
+<<<<<<< HEAD
             lcd.clear();
 
             lcd.set_Cursor(0,0);
@@ -138,10 +138,17 @@ void  game_mode(void)
             lcd.set_Cursor(0,1);
             
             lcd.print("1 = M | 2 = G");
+=======
+            lcd.set_Cursor(0,0);
+            lcd.print(" *** GAME 1 ***");
+            lcd.set_Cursor(0,1);
+            lcd.print(" User | Admin");
+>>>>>>> 790c1263d8e43cee77ec800320ac0bf8cb3f64d2
           }
           else if (bt2)
           {
             game_slave();
+<<<<<<< HEAD
             lcd.clear();
 
             lcd.set_Cursor(0,0);
@@ -149,6 +156,12 @@ void  game_mode(void)
             lcd.set_Cursor(0,1);
             
             lcd.print("1 = M | 2 = G");
+=======
+            lcd.set_Cursor(0,0);
+            lcd.print(" *** GAME 1 ***");
+            lcd.set_Cursor(0,1);
+            lcd.print(" User | Admin");
+>>>>>>> 790c1263d8e43cee77ec800320ac0bf8cb3f64d2
           }
           lcd.backlight();    // set light ON (in loop, shit code..)      
       }
@@ -169,8 +182,8 @@ void  demo_receive(void)
       lcd.clear();
       lcd.set_Cursor(0,0);
       lcd.print("receive demo ");
-
       radio_init_receive("00001");
+      
       do
       {
           key_loop(&bt1, &bt2, &bt3);

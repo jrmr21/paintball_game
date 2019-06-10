@@ -19,8 +19,8 @@ void    key_time_loop(int *bt1, int *bt2, int *bt3);
 #define posX_arrow    14
 #define arrow         "<="
 
-//#define   lcd_ADRESS 0x3F
-#define   lcd_ADRESS 0x27
+#define   lcd_ADRESS 0x3F
+//#define   lcd_ADRESS 0x27
 
 #ifndef LCD                // PROTECT DOUBLE INCLUSION BABY
   #define LCD
@@ -94,9 +94,23 @@ void  radio_receive(trame_t* trame);
 void  radio_send(trame_t *t);
 
 
+<<<<<<< HEAD
 // ***********    GAME_INIT   ********************
+=======
+// ***********    FLAGS GAME   ********************
+void  game_flag_slave(int game_time);
+void  game_flag_master(const unsigned char players[10]);
+
+void  game_flag(int game_time, int res[3]);
+
+
+// ***********    GAME  ********************
+>>>>>>> 790c1263d8e43cee77ec800320ac0bf8cb3f64d2
 void  game_master(void);
 void  game_slave(void);
+
+void  game_lobby(const unsigned char players[10]);
+void  game_flag(int game_time, int res[3]);
 
 
 // ***********    TOOLS   ********************
@@ -111,9 +125,17 @@ void  game_slave(void);
 #define   TIME_STOP         "TE \0"
 #define   TIME_GET          "TG \0"
 
+#define   GAME_FLAGS_SELECT "GF1\0"
+#define   GAME_BOM_SELECT   "GB1\0"
+
+#define   TEAM_RED          'R'
+#define   TEAM_GREEN        'G'
+#define   TEAM_BLUE         'B'
+
 #define   JOIN_VALIDATION   "J1 \0"
 #define   JOIN_REQUEST      "J0 \0"
 
+<<<<<<< HEAD
 #define   GAME_FLAGS_SELECT "GF1\0"
 #define   GAME_BOM_SELECT   "GB1\0"
 
@@ -125,11 +147,15 @@ void  game_slave(void);
 
 #define   TIME              'T'            // slave command
 #define   SCORE             'S' 
+=======
+#define   TIME             'T'                  // slave command
+#define   SCORE            'S'
+>>>>>>> 790c1263d8e43cee77ec800320ac0bf8cb3f64d2
 
 
 void            create_command(unsigned char data, unsigned int a, unsigned char p[4]);
 int             create_trame(trame_t *t, unsigned char network[4], ...);
-void            compress_char(unsigned int a, char data[4]);
+void            compress_char(unsigned int a, unsigned char data[2]);
 unsigned int    decompress_char(unsigned char a[2]);
 int             trame_to_str(trame_t *t, unsigned char str[50]);
 void            str_to_trame(trame_t *t, unsigned char* str);
