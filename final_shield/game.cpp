@@ -87,7 +87,11 @@ void   game_master(void)                // add gamers in room
             
                for (int8_t b = 0; b < 10; b++)
                {
+<<<<<<< HEAD
                   if ((trameR.adress == players[b]) || (cpt_players > 9))   // error player
+=======
+                  if (trameR.adress == players[b] || cpt_players > 9)   // error player
+>>>>>>> 58e4db43844d57fa73c59bb31dd4b90515070a46
                   {                                                     // send conflit adress...
                     kill_trame = 1;
                     create_trame(&trameS, network, CONFLIT_ADRESS, END_COMMAND);
