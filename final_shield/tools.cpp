@@ -11,7 +11,7 @@ void create_command(unsigned char data, unsigned int a, unsigned char p[4])
 
 // On encode un int (en base 10) en un nombre en base 255
 // On stocke ce nombre dans un tableau de char pour le dans une trame
-void compress_char(unsigned int a, char data[4])
+void compress_char(unsigned int a, unsigned char data[2])
 {
   float f;
 
@@ -39,14 +39,14 @@ unsigned int decompress_char(unsigned char a[2])
 int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progress...
 {
   int8_t             i;
-  unsigned char      *data;
   va_list            arg;                 // create list arg
+  char*              tmp_data;
+  
   va_start(arg, network);            // init start pointer arg_list to *p pointer
    
   t->adress     = network[0];
   t->adress_to  = network[1];
   i             = 0;
-  data          = "  \0";
   
   while (va_arg(arg, unsigned char*)[0] != END_COMMAND)                                  // count number of arguments
     i++;
@@ -62,8 +62,17 @@ int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progr
   va_start(arg, network);
   for( i = 0; i < t->number_command; i++)
   {    
-      strncpy(t->data[i], va_arg(arg, unsigned char*), 3);
+      //strncpy(t->data[i], va_arg(arg, unsigned char*), 4);
+      
+      tmp_data = va_arg(arg, unsigned char*);
+      
+      t->data[i][0] = tmp_data[0];
+      t->data[i][1] = tmp_data[1];      // FUCK YOU STRCPY AND STRNCPY, YOU CAN'T WRITE unsigned char with 0 decimal value 
+      t->data[i][2] = tmp_data[2];              // FUUUUUUCKK !!!!!!!!!!!
+      
       if (t->data[i][3] != '\0')  t->data[i][3] = '\0';       // check '\0' is present or not
+      
+      //Serial.println(decompress_char(t->data[i][2]));
   }
   va_end(arg);
   return (0);       // no bugs

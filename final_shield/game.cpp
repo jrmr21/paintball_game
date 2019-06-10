@@ -2,7 +2,7 @@
 
 extern unsigned char terminal_adress;
 
-void  game_lobby(void)
+void  game_lobby(const unsigned char  players[10])
 {
     int8_t  bt1, bt2, bt3;
     
@@ -10,21 +10,31 @@ void  game_lobby(void)
     
     lcd.set_Cursor(0,0);
     lcd.print("  *** LOBBY *** ");
-    
-	lcd.set_Cursor(0,1);
-	lcd.print("  FLAG | BOMB   ");
+
+    lcd.set_Cursor(0,1);
+    lcd.print("  FLAG | BOMB   ");
     
     do
     { 
         key_loop(&bt1, &bt2, &bt3);
     
-        if (bt1)
+        if (bt2)
         {
-          //game_flag();
+          game_flag_master( players );
+          lcd.set_Cursor(0,0);
+          lcd.print("  *** LOBBY *** ");
+      
+          lcd.set_Cursor(0,1);
+          lcd.print("  FLAG | BOMB   ");
         }
-        else if (bt2)
+        else if (bt1)
         {
-          //game_bomb();
+          //game_bomb_master();
+          lcd.set_Cursor(0,0);
+          lcd.print("  *** LOBBY *** ");
+      
+          lcd.set_Cursor(0,1);
+          lcd.print("  FLAG | BOMB   ");
         }
         lcd.backlight();    // set light ON (in loop, shit code..)      
     }
@@ -44,6 +54,7 @@ void   game_master(void)                // add gamers in room
     unsigned char     players[10] = {0, 0, 0, 0, 0,
                                     0, 0, 0, 0, 0};     // 10 adress of players
 
+    players[0]          = ADRESS_MASTER;
     cpt_players         = 1;    // master is a player too
     kill_trame          = 0;
     
@@ -72,12 +83,12 @@ void   game_master(void)                // add gamers in room
           if ((strcmp( JOIN_REQUEST, trameR.data[0]) == 0))   // we have a join request 
           {
               radio_init_sender("00001");           // change mode sender
-              delay(10);
+              delay(5);
               network[1] = trameR.adress;
             
                for (int8_t b = 0; b < 10; b++)
                {
-                  if (trameR.adress == players[b] || cpt_players > 9)   // error player
+                  if (trameR.adress == players[b] || cpt_players > 10)   // error player
                   {                                                     // send conflit adress...
                     kill_trame = 1;
                     create_trame(&trameS, network, CONFLIT_ADRESS, END_COMMAND);
@@ -92,10 +103,10 @@ void   game_master(void)                // add gamers in room
                else
                 kill_trame = 0;                   // reset kill accept
 
+              delay(5);
               radio_send(&trameS);                // send trame
               radio_send(&trameS);                // send trame
           }
-          
           trameR.data[0][0]  = '\0';      // reset trame receive
           lcd.set_Cursor(0, 1);
           lcd.printstr("players: ");
@@ -103,24 +114,19 @@ void   game_master(void)                // add gamers in room
           lcd.print(cpt_players);
           radio_init_receive("00001");        // change mode receive
         }
+        else if (bt2 || bt1)
+        {
+          game_lobby(players);
+          
+          lcd.set_Cursor(0,0);
+          lcd.print(" *** MASTER ***");
+          lcd.set_Cursor(0, 1);
+          lcd.printstr("players: ");
+          lcd.set_Cursor(10, 1);
+          lcd.print(cpt_players);
+        }
         
         lcd.backlight();    // set light ON (in loop, shit code..)    
-
-        if (bt2)
-        {
-			game_lobby();
-			
-			// On réaffiche le menu master
-            lcd.clear();
-            lcd.set_Cursor(0,0);
-            lcd.print(" *** MASTER ***");
-            lcd.set_Cursor(0, 1);
-            lcd.printstr("players: ");
-            lcd.set_Cursor(10, 1);
-            lcd.print(cpt_players);
-        }
-
-            
     } while (!bt3);
     
     terminal_adress = 5;    // restart default adress
@@ -129,9 +135,7 @@ void   game_master(void)                // add gamers in room
 
 void    game_slave(void)
 {
-	game_flag_slave(5); //////////////////////////////////////////////////////////////////////////////////////////
-	
-    trame_t   trameS;
+	  trame_t   trameS;
     trame_t   trameR;
 
     int8_t            bt1, bt2, bt3;
@@ -179,13 +183,13 @@ void    game_slave(void)
               
               if (trameR.data[0][0] != '\0')                          // we have a data
               {
-                Serial.println("receive");
                 if ((strcmp( JOIN_VALIDATION, trameR.data[0]) == 0))   // we have a join accept
                 {
                   connection = 1;
                   digitalWrite(R, 0);
                   digitalWrite(G, 0);
                   digitalWrite(B, 1);
+                  radio_init_receive("00001");                          // change mode receive
                 }
               }
               delay(1);
@@ -196,20 +200,35 @@ void    game_slave(void)
             lcd.print((!connection)? "FAIL connect...": " CONNECTED");
             trameR.data[0][0] = '\0';
         }
-		else if (connection) 
-		{
-			radio_init_receive("00001");                          // change mode receive
-            delay(10);
-			
-			radio_receive(&trameR);
-			
-			if ((strcmp( GAME_FLAGS_SELECT, trameR.data[0]) == 0) && (TIME == trameR.data[1][0]))
-			{
-				int game_time = decompress_char(trameR.data[1][0] + 1);
-				
-				tab = game_flag_slave(game_time);		
-			}	
-		}
+        else if (connection) 
+        {   
+          radio_receive(&trameR);
+
+          if (trameR.data[0][0] != '\0')
+          {
+            //Serial.println(decompress_char(trameR.data[1] + 1));
+            //Serial.println((unsigned char)trameR.data[1][2]);
+            
+            if ((strcmp( GAME_FLAGS_SELECT, trameR.data[0]) == 0) && (TIME == trameR.data[1][0]))
+            {
+              int game_time = decompress_char(trameR.data[1] + 1);    // Second
+
+              //Serial.println(game_time);
+              
+              game_flag_slave(game_time);
+              trameR.data[0][0] = '\0';
+            }
+            else if ((strcmp( GAME_BOM_SELECT, trameR.data[0]) == 0) && (TIME == trameR.data[1][0]))
+            {
+                // BOMB GAME ADD HERE
+            }
+
+            lcd.set_Cursor(0,0);
+            lcd.print(" *** SLAVE ***");
+            lcd.set_Cursor(0, 1);
+            lcd.printstr(" CONNECTED *");
+          }
+        }
 
         lcd.backlight();    // set light ON (in loop, shit code..)    
     } while (!bt3);
