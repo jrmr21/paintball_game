@@ -57,7 +57,8 @@ int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progr
   va_end(arg);
   
   t->number_command = i;
-  t->size_trame     = 3 + (t->number_command * 3);
+  t->size_trame     = 4 + (t->number_command * 3);
+  t->secure         = 1;
   
   va_start(arg, network);
   for( i = 0; i < t->number_command; i++)
@@ -79,12 +80,13 @@ int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progr
 
 void str_to_trame(trame_t* trame, unsigned char* str)
 {
-    int i = 3;
+    int i = 4;
     int number_command = 0;
 
     trame->adress     = str[0];
     trame->adress_to  = str[1];
     trame->size_trame = str[2];
+    trame->secure     = str[3];
     
     while(str[i] != '\0')
     {
@@ -114,6 +116,8 @@ void            debug_trame(trame_t *trame)
       Serial.println(trame->number_command);
       Serial.print("size trame ");
       Serial.println(trame->size_trame);
+      Serial.print("secure: ");
+      Serial.println(trame->secure);
 
       for (int i = 0; i < trame->number_command; i++)
       {
@@ -141,14 +145,15 @@ int  trame_to_str(trame_t *t, unsigned char str[50])
   str[0]  = t->adress;  
   str[1]  = t->adress_to;                     // protocol
   str[2]  = t->size_trame;
+  str[3]  = t->secure;
 
   for (int8_t i = 1; (i < t->number_command + 1) ; i++)
   {
-    str[(i * 3)]      = t->data[i - 1][0];
-    str[(i * 3) + 1]  = t->data[i - 1][1];
-    str[(i * 3) + 2]  = t->data[i - 1][2];
+    str[(i * 3) + 1]  = t->data[i - 1][0];
+    str[(i * 3) + 2]  = t->data[i - 1][1];
+    str[(i * 3) + 3]  = t->data[i - 1][2];
   }
   
-  str[(3 + (t->number_command * 3)) + 1] = '\0';
+  str[(4 + (t->number_command * 3)) + 1] = '\0';
   return (0);  
 }

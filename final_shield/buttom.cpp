@@ -61,7 +61,7 @@ void    key_time_loop(int *bt1, int *bt2, int *bt3)
     if (digitalRead(btn2) && (!btn_2))
     {
       btn_2 = 1;
-      t1    = millis();
+      t2    = millis();
     }
     else if ((btn_2) && digitalRead(btn2)) 
     {

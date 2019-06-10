@@ -1,5 +1,7 @@
 #include    "core_header.h"
 
+extern RF24           radio(7, 8);
+
 void    init_pin(void)
 {
   Serial.begin(9600);
@@ -11,6 +13,8 @@ void    init_pin(void)
   digitalWrite(R, 0);
   digitalWrite(G, 0);
   digitalWrite(B, 0);
+
+  radio.begin();
 
   pinMode(btn1, INPUT);
   pinMode(btn2, INPUT);

@@ -7,16 +7,13 @@ void  game_flag_master(const unsigned char players[10])
     trame_t   trameS;
     trame_t   trameR;
 
-    int               t1,  t2,  t3;       // time press buttoms
     int8_t            bt1, bt2, bt3;      // buttoms press true or !true
     char              network[4];
     unsigned char     GAME_TIME[4]  = {'F'};
-    uint32_t          milli;
-    uint32_t          second;
     uint8_t           i;
     int               res[3] = {0};
     
-    create_command(TIME, 120, GAME_TIME);
+    create_command(TIME, 60, GAME_TIME);
     
     trameR.data[0][0]   = '\0';
     terminal_adress     = ADRESS_MASTER;
@@ -30,33 +27,31 @@ void  game_flag_master(const unsigned char players[10])
     create_trame(&trameS, network, GAME_FLAGS_SELECT, GAME_TIME, END_COMMAND);
     radio_send(&trameS);                // send trame
 
-    game_flag(120, res);
+    game_flag(60, res);
     i                 =    1;         // master is 0
     
-          // ++++++++++++++++++++ go to stop all game
 
-    while ((players[i] != 0) && (i < 11))
+    create_trame(&trameS, network, GAME_STOP, END_COMMAND);
+
+    for (uint8_t z = 0; z < 249; z++)
     {
-      radio_init_sender("00001");           // change mode sender
-      delay(10);
-
-      network[1]          = players[i];
+      radio_send(&trameS);                // send trame
+      delay(1);
+    }
+    
+    while ((players[i] != 0) && (i < 11))
+    { 
+      network[1]          = players[i];      
       create_trame(&trameS, network, SCORE, END_COMMAND);
 
-      delay(5);
-      radio_send(&trameS);                // send
-      radio_send(&trameS);                // send
-      
       trameR.data[0][0] = '\0'; 
-      radio_init_receive("00001");
-      
+
       for (uint8_t j = 0; (j < 200) && (trameR.data[0][0] == '\0'); j++)
       {
+          radio_init_receive("00001");
+          delay(15);
           radio_receive(&trameR);
 
-          if (trameR.data[0][0] != '\0')
-            debug_trame(&trameR);
-            
           if (((trameR.data[0][0]) == TEAM_RED) && ((trameR.data[1][0]) == TEAM_GREEN) && ((trameR.data[2][0]) == TEAM_BLUE))
           {
             res[0] += decompress_char(trameR.data[0] + 1);
@@ -66,11 +61,17 @@ void  game_flag_master(const unsigned char players[10])
           }
           else
             trameR.data[0][0] = '\0'; 
-          delay(1);
+
+          radio_init_sender("00001");           // change mode sender
+          delay(15);
+          radio_send(&trameS);                // send
+          radio_send(&trameS);
+
+          delay(5);
       }
       i++;
     }
-
+    lcd.clear();  
 
     lcd.set_Cursor(0,0);
     lcd.print("WINER IS :");
@@ -172,7 +173,22 @@ void  game_flag(int game_time, int res[3])
     res[0] = 0;
     res[1] = 0;
     res[2] = 0;
-    
+
+
+      trame_t   trameR;
+      char      network[4];
+  
+    network[0]          = terminal_adress;
+    network[1]          = ADRESS_MASTER;          // default guy
+    network[2]          = '\0';
+    trameR.data[0][0]   = '\0'; 
+
+    if (terminal_adress != ADRESS_MASTER)
+    {
+      radio_init_receive("00001");                          // change mode receive
+      delay(10);
+    }
+          
     milli   = millis();
     second  = milli;
     team    = 0;
@@ -191,12 +207,19 @@ void  game_flag(int game_time, int res[3])
     
     while ((uint32_t)((millis() - milli) / 1000) <  game_time)
     {
+      if (terminal_adress != ADRESS_MASTER)
+      {
+        radio_receive(&trameR);
+        
+        if((strcmp( GAME_STOP, trameR.data[0]) == 0))
+          game_time = 0;
+      }
       
       key_time_loop(&t1, &t2, &t3);
       key_loop(&bt1, &bt2, &bt3);
 
 
-      if ((millis() - second) > 1000)      //  send 1hz 
+      if ((millis() - second) > 1000)      //   1hz 
       {  
         second = millis();
         lcd.set_Cursor(0,0);

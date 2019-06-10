@@ -206,15 +206,11 @@ void    game_slave(void)
 
           if (trameR.data[0][0] != '\0')
           {
-            //Serial.println(decompress_char(trameR.data[1] + 1));
-            //Serial.println((unsigned char)trameR.data[1][2]);
-            
+         
             if ((strcmp( GAME_FLAGS_SELECT, trameR.data[0]) == 0) && (TIME == trameR.data[1][0]))
             {
               int game_time = decompress_char(trameR.data[1] + 1);    // Second
 
-              //Serial.println(game_time);
-              
               game_flag_slave(game_time);
               trameR.data[0][0] = '\0';
             }

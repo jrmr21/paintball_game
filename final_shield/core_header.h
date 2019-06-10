@@ -19,8 +19,8 @@ void    key_time_loop(int *bt1, int *bt2, int *bt3);
 #define posX_arrow    14
 #define arrow         "<="
 
-#define   lcd_ADRESS 0x3F
-//#define   lcd_ADRESS 0x27
+//#define   lcd_ADRESS 0x3F
+#define   lcd_ADRESS 0x27
 
 #ifndef LCD                // PROTECT DOUBLE INCLUSION BABY
   #define LCD
@@ -32,7 +32,7 @@ void    key_time_loop(int *bt1, int *bt2, int *bt3);
 void  init_lcd(void);
 
 /*
- *                    We USE  
+ *                    We USE
   lcd.set_Cursor(col, line);
   lcd.printstr(char* a);
   lcd.clear();
@@ -55,6 +55,8 @@ typedef struct    trame_s
 {
   unsigned char   adress;
   unsigned char   adress_to;
+
+  unsigned char   secure;
 
   unsigned char   size_trame;
   unsigned char   number_command;
@@ -93,6 +95,7 @@ void  radio_init_sender(const byte address[6]);
 void  radio_init_receive(const byte address[6]);
 void  radio_receive(trame_t* trame);
 void  radio_send(trame_t *t);
+int   radio_send_secure(trame_t *t);
 
 
 // ***********    FLAGS GAME   ********************
@@ -115,8 +118,12 @@ void  game_flag(int game_time, int res[3]);
 #define   ERROR_DATA        "ED \0"
 #define   CONFLIT_ADRESS    "CA \0"
 #define   DOUBLE_COMMAND    '#'  
+#define   SUCCES_RECEIVE    "SDR\0"
+
 #define   ADRESS_BRODCAST   255
 #define   ADRESS_MASTER     254
+
+
 
 #define   TIME_START        "TS \0"       // master command
 #define   TIME_STOP         "TE \0"
@@ -124,6 +131,7 @@ void  game_flag(int game_time, int res[3]);
 
 #define   GAME_FLAGS_SELECT "GF1\0"
 #define   GAME_BOM_SELECT   "GB1\0"
+#define   GAME_STOP         "GS \0"
 
 #define   TEAM_RED          'R'
 #define   TEAM_GREEN        'G'
