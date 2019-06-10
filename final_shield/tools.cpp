@@ -69,8 +69,7 @@ int  create_trame(trame_t *t, unsigned char network[4], ...)    // work in progr
       t->data[i][0] = tmp_data[0];
       t->data[i][1] = tmp_data[1];      // FUCK YOU STRCPY AND STRNCPY, YOU CAN'T WRITE unsigned char with 0 decimal value 
       t->data[i][2] = tmp_data[2];              // FUUUUUUCKK !!!!!!!!!!!
-      
-      if (t->data[i][3] != '\0')  t->data[i][3] = '\0';       // check '\0' is present or not
+      t->data[i][3] = '\0';       // check '\0' is present or not
       
       //Serial.println(decompress_char(t->data[i][2]));
   }
