@@ -168,7 +168,7 @@ void  game_flag(int game_time, int res[3])
     uint32_t          second;
     int8_t            team;             // 1 = R, 2 = G, 3 = B, 0 = NONE
 
-      // Pour renvoyer les résultats dans un tableau [R,G,B]
+    // Pour renvoyer les résultats dans un tableau [R,G,B]
     res[0] = 0;
     res[1] = 0;
     res[2] = 0;
@@ -254,8 +254,7 @@ void  game_flag(int game_time, int res[3])
         digitalWrite(G, 0);
         digitalWrite(B, 1);
       }
-      
-      
-      lcd.backlight();    // set light ON (in loop, shit code..)  
+
+      lcd.backlight();    // set light ON (in loop, shit code..)
     }
 } 

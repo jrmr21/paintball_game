@@ -21,7 +21,6 @@ void  radio_init_receive(const byte address[6])
 
 void  radio_receive(trame_t* trame)
 {
-
     unsigned char texto[32] = " ";
 
     if (radio.available()) 
@@ -49,4 +48,17 @@ void  radio_send(trame_t *t)
 
   radio.write(text, t->size_trame);    // strlen is better of sizeof to calculate size char
   delay(50);
+}
+
+void  radio_send_secure(trame_t *t)
+{
+    unsigned char text[50] = "\0";  
+    trame_to_str(t, text);
+    
+    radio.write(text, t->size_trame);
+    delay(50);
+	
+	radio_init_receive("00001");
+	
+	radio_receive(trame_t* )
 }
