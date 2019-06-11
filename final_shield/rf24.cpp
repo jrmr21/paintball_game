@@ -40,15 +40,16 @@ void  radio_receive(trame_t* trame)
           trame_t   trameS;
 
           network[0]          = terminal_adress;
-          network[1]          = trame->adress_to;          // default guy
+          network[1]          = trame->adress;
           network[2]          = '\0';
     
-          create_trame(&trameS, network, GAME_STOP, END_COMMAND);
-          radio_send(&trameS);
-          radio_send(&trameS);
-          radio_send(&trameS);
+          create_trame(&trameS, network, SUCCES_RECEIVE, END_COMMAND);
+          for (uint8_t b = 0; b < 20; b++)
+            radio_send(&trameS);
+            
           radio_init_receive("00001");
         }
+        debug_trame(trame);
     }
 }
 
@@ -59,7 +60,7 @@ void  radio_send(trame_t *t)
   trame_to_str(t, text);
 
   radio.write(text, t->size_trame);    // strlen is better of sizeof to calculate size char
-  delay(5);
+  delay(2);
 }
 
 int  radio_send_secure(trame_t *t)
@@ -79,7 +80,7 @@ int  radio_send_secure(trame_t *t)
     
     radio_init_receive("00001");
     delay(5);
-    for (uint8_t i = 0; (i < 100) && (trameR.data[0][0] == '\0'); i++)
+    for (uint8_t h = 0; (h < 100) && (trameR.data[0][0] == '\0'); h++)
     {
       radio_receive(&trameR);
       delay(1);
@@ -87,5 +88,6 @@ int  radio_send_secure(trame_t *t)
   }
   
   radio_init_sender("00001");           // change mode sender
+  t->secure           = 1;
   return ((strcmp( SUCCES_RECEIVE, trameR.data[0]) == 0)? 0 : 1);
 }

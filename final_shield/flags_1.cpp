@@ -12,9 +12,8 @@ void  game_flag_master(const unsigned char players[10])
     unsigned char     GAME_TIME[4]  = {'F'};
     uint8_t           i;
     int               res[3] = {0};
-    
-    create_command(TIME, 60, GAME_TIME);
-    
+
+    create_command(TIME, 30, GAME_TIME);    
     trameR.data[0][0]   = '\0';
     terminal_adress     = ADRESS_MASTER;
     network[0]          = terminal_adress;
@@ -23,60 +22,83 @@ void  game_flag_master(const unsigned char players[10])
         
     radio_init_sender("00001");           // change mode sender
     delay(10);
-
     create_trame(&trameS, network, GAME_FLAGS_SELECT, GAME_TIME, END_COMMAND);
     radio_send(&trameS);                // send trame
 
-    game_flag(60, res);
-    i                 =    1;         // master is 0
-    
+    game_flag(30, res);
 
+    //*************************************************************************************************
+    
+    i                 =    1;         // master is 0
     create_trame(&trameS, network, GAME_STOP, END_COMMAND);
 
-    for (uint8_t z = 0; z < 249; z++)
+    for (uint8_t z = 0; z < 3; z++)
     {
-      radio_send(&trameS);                // send trame
+      radio_send(&trameS);                // send trame       SPAM STOP GAME
       delay(1);
     }
+    //*************************************************************************************************
+
     
     while ((players[i] != 0) && (i < 11))
-    { 
-      network[1]          = players[i];      
+    {
+      radio_init_sender("00001");           // change mode sender
+      delay(10);
+      network[1]          = players[i];
       create_trame(&trameS, network, SCORE, END_COMMAND);
+      trameR.data[0][0]   = '\0'; 
 
-      trameR.data[0][0] = '\0'; 
-
-      for (uint8_t j = 0; (j < 200) && (trameR.data[0][0] == '\0'); j++)
+      Serial.println("wait user error: ");
+      radio_send_secure(&trameS);
+      
+      for (uint8_t j = 0; (j < 249) && (trameR.data[0][0] == '\0'); j++)
       {
           radio_init_receive("00001");
-          delay(15);
           radio_receive(&trameR);
 
-          if (((trameR.data[0][0]) == TEAM_RED) && ((trameR.data[1][0]) == TEAM_GREEN) && ((trameR.data[2][0]) == TEAM_BLUE))
+          if (((trameR.data[0][0]) == TEAM_RED) && ((trameR.data[1][0]) == TEAM_GREEN) 
+                    && ((trameR.data[2][0]) == TEAM_BLUE) && (trameR.adress == players[i]))
           {
             res[0] += decompress_char(trameR.data[0] + 1);
             res[1] += decompress_char(trameR.data[1] + 1);
             res[2] += decompress_char(trameR.data[2] + 1);
+
+            Serial.println((unsigned char)trameR.data[0][2]);
             
+            Serial.print("red ");
+            Serial.println((int)res[0]);
+            
+            Serial.print("green ");
+            Serial.println((int)res[1]);
+            
+            Serial.print("blue ");
+            Serial.println((int)res[2]);
+            
+            Serial.println("succes: ");
+
+            break;
           }
           else
             trameR.data[0][0] = '\0'; 
-
-          radio_init_sender("00001");           // change mode sender
-          delay(15);
-          radio_send(&trameS);                // send
-          radio_send(&trameS);
-
-          delay(5);
+          delay(2);
       }
       i++;
     }
-    lcd.clear();  
-
+    
+    lcd.clear();
     lcd.set_Cursor(0,0);
     lcd.print("WINER IS :");
 
-    if (res[0] > (res[1] && res[2]))
+            Serial.print("end:  red ");
+            Serial.println((int)res[0]);
+            
+            Serial.print("green ");
+            Serial.println((int)res[1]);
+            
+            Serial.print("blue ");
+            Serial.println((int)res[2]);
+            
+    if ((res[0] > res[2]) && (res[0] > res[1]))
     { 
       lcd.set_Cursor(0, 1);
       lcd.printstr("RED :");
@@ -84,7 +106,7 @@ void  game_flag_master(const unsigned char players[10])
       lcd.set_Cursor(10, 1);
       lcd.print(res[0]);
     }
-    else if (res[1] > (res[0] && res[2]))
+    else if ((res[1] > res[2]) && (res[1] > res[0]))
     {
       lcd.set_Cursor(0, 1);
       lcd.printstr("GREEN :");
@@ -92,7 +114,7 @@ void  game_flag_master(const unsigned char players[10])
       lcd.set_Cursor(10, 1);
       lcd.print(res[1]);      
     }
-    else if (res[2] > (res[0] && res[1]))
+    else if ((res[2] > res[0]) && (res[2] > res[1]))
     {
       lcd.set_Cursor(0, 1);
       lcd.printstr("BLUE :");
@@ -108,7 +130,7 @@ void  game_flag_master(const unsigned char players[10])
     
     
     lcd.backlight();    // set light ON (in loop, shit code..)  
-    delay(5000);
+    delay(15000);
     lcd.clear();  
 }
 
@@ -131,26 +153,29 @@ void  game_flag_slave(int game_time)
     network[2]          = '\0';
     trameR.data[0][0]   = '\0'; 
     
-    game_flag(game_time, res[3]);
+    game_flag(game_time, res);
     
     radio_init_receive("00001");
 
     create_command(TEAM_RED , res[0], SC_R);
     create_command(TEAM_GREEN, res[1], SC_G);
     create_command(TEAM_BLUE, res[2], SC_B);
+
+    Serial.print("red: ");
+    Serial.println(SC_R[2]);
       
-    for (i; (i < 2000); i++)
+    for (i; (i < 4000); i++)
     {
         radio_receive(&trameR);
-          
-        if (((trameR.data[0][0]) == SCORE))
+
+        if (strcmp( SCORE, trameR.data[0]) == 0)
         {
           create_trame(&trameS, network, SC_R, SC_G, SC_B, END_COMMAND);
           radio_init_sender("00001");           // change mode sender
-          delay(20);
-            
-          radio_send(&trameS);                // send
-          radio_send(&trameS);                // send
+          delay(5);
+          Serial.print("send results: ");
+          radio_send(&trameS);                   // send
+          i = 5000;
         }
         else
           trameR.data[0][0] = '\0'; 
@@ -243,7 +268,7 @@ void  game_flag(int game_time, int res[3])
           default : break;
         }
       }
-
+      
       if ((t1 > 9) && (team != 1))
       {
         team = 1;
@@ -277,8 +302,6 @@ void  game_flag(int game_time, int res[3])
         digitalWrite(G, 0);
         digitalWrite(B, 1);
       }
-      
-      
       lcd.backlight();    // set light ON (in loop, shit code..)  
     }
 } 

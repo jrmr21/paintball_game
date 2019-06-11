@@ -19,8 +19,8 @@ void    key_time_loop(int *bt1, int *bt2, int *bt3);
 #define posX_arrow    14
 #define arrow         "<="
 
-//#define   lcd_ADRESS 0x3F
-#define   lcd_ADRESS 0x27
+#define   lcd_ADRESS 0x3F
+//#define   lcd_ADRESS 0x27
 
 #ifndef LCD                // PROTECT DOUBLE INCLUSION BABY
   #define LCD
@@ -32,7 +32,7 @@ void    key_time_loop(int *bt1, int *bt2, int *bt3);
 void  init_lcd(void);
 
 /*
- *                    We USE
+ *         We USE
   lcd.set_Cursor(col, line);
   lcd.printstr(char* a);
   lcd.clear();
@@ -79,7 +79,6 @@ void  frame3(int8_t *frame);
 void  opt_demo(void);
 void  demo_sender(void);
 void  demo_receive(void);
-void  adress(void);
 void  led(void);
 void  adress(void);
 void  game_mode(void);
@@ -118,7 +117,7 @@ void  game_flag(int game_time, int res[3]);
 #define   ERROR_DATA        "ED \0"
 #define   CONFLIT_ADRESS    "CA \0"
 #define   DOUBLE_COMMAND    '#'  
-#define   SUCCES_RECEIVE    "SDR\0"
+#define   SUCCES_RECEIVE    " DR\0"
 
 #define   ADRESS_BRODCAST   255
 #define   ADRESS_MASTER     254
@@ -141,7 +140,7 @@ void  game_flag(int game_time, int res[3]);
 #define   JOIN_REQUEST      "J0 \0" 
 
 #define   TIME             'T'                  // slave command
-#define   SCORE            'S'
+#define   SCORE            "S  \0"
 
 
 void            create_command(unsigned char data, unsigned int a, unsigned char p[4]);
